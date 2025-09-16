@@ -25,47 +25,56 @@ section {
   background-size: cover ;
 }
 
-.b2-contenv{
+.b2-contenv {
   background-image: url("/imgs/fundocontenv.jpg");
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover ;
+  background-size: cover;
 
+  display: flex;               /* define flex container */
+  justify-content: center;     /* centraliza horizontalmente */
+  align-items: center;         /* centraliza verticalmente */
+  height: 100vh;               /* garante altura da viewport */
 }
 
-.card { 
-  width: 400px; 
-  height: 300px; 
-  margin: 2rem auto; 
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 80%;        /* largura proporcional */
+  max-width: 400px;  /* limite máximo */
+  aspect-ratio: 4 / 3; /* mantém proporção do card */
   perspective: 1000px; 
-  cursor: pointer; 
-} 
+  cursor: pointer;
+}
 
-.card-inner { 
-  position: relative; 
-  width: 100%; 
-  height: 100%; 
-  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); 
-  transform-style: preserve-3d; 
-} 
+.card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
 
-.card:hover .card-inner { transform: rotateY(180deg); } 
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
 
-.card-front, .card-back { 
-  position: absolute; 
-  width: 100%; height: 100%; 
-  backface-visibility: hidden; 
-  overflow: hidden; 
-} 
+.card-front img, .card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* mantém proporção da imagem */
+}
 
-.card-front img, .card-back img { 
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover; 
-} 
-
-.card-back { transform: rotateY(180deg); }
-
+.card-back {
+  transform: rotateY(180deg);
+}
 
 
 .b3-contenvpan {
@@ -79,9 +88,8 @@ section {
     background-size: auto 100%;       /* altura da viewport, mantém proporção */
 
 
-    display: flex;                /* necessário se tiver elementos internos */
-    flex-direction: row;
-    position: relative;
+    display: grid;                /* necessário se tiver elementos internos */
+    grid-template-rows: auto;
 }
 
 .fullscreen {
@@ -110,10 +118,36 @@ section {
   to   { transform: scale(1); opacity: 1; }
 }
 
+.objeto1 {
+  position: absolute;
+  top: 8%;      /* espaçamento do topo */
+  left: 10%;     /* espaçamento da esquerda */
+  max-width: 28%; /* reduz proporcionalmente */
+  height: auto;   /* mantém proporção */
+  z-index: 2;
+  opacity: 98%;
+  transform: rotate(-5deg);
+  transform-origin: top left;
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+}
 
+.objeto2 {
+  position: absolute;
+  top: 12%;       /* ajusta verticalmente para mais ou menos centro */
+  left: 50%;      /* centraliza horizontalmente */
+  transform: translateX(-50%); /* garante centralização exata */
+  max-width: 40%; /* proporcionalmente menor */
+  height: auto;
+  z-index: 1;     /* fica atrás do objeto1 na sobreposição */
+  opacity: 98%;
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+}
 
-
-
+.b3a-contenvpan {
+  position: relative;   /* necessário para posicionar imagens dentro */
+  width: 100%;
+  height: 100vh;
+}
 
 
 
