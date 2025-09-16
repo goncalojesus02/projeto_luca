@@ -11,7 +11,6 @@ body {
 }
 
 section {
-    flex: none;                /* evita encolher */
     width: 100vw;
     height: 100vh;
     scroll-snap-align: start; /* alinha o início de cada section */
@@ -20,7 +19,7 @@ section {
 }
 
 .b1-envelope{
-  background-image: url("/imgs/envelope_aberto.png");
+  background-image: url("/imgs/Eenvelope_Aaberto.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover ;
@@ -33,7 +32,7 @@ section {
   height: 100vh;
   justify-content: center;     /* centraliza horizontalmente */
   align-items: center;         /* centraliza verticalmente */
-  background-image: url("/imgs/fundocontenv.jpg");
+  background-image: url("/imgs/1_copiar.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -54,14 +53,15 @@ section {
     height: 100vh;                /* ocupa toda a altura da viewport */
     scroll-snap-align: start;
 
-    background-image: url("/imgs/fundo11.jpg");
+    background-image: url("/imgs/2_copiar.jpg");
     background-repeat: no-repeat;
     background-position: left; /* ou center center, se preferir */
     background-size: auto 100%;       /* altura da viewport, mantém proporção */
 
 
-    display: grid;                /* necessário se tiver elementos internos */
-    grid-template-rows: auto;
+    display: flex;
+    flex-direction: row;
+    ;
 }
 
 .fullscreen {
@@ -90,9 +90,9 @@ section {
 }
 
 .objeto1 {
-  position: absolute;
-  top: 8%;      /* espaçamento do topo */
-  left: 10%;     /* espaçamento da esquerda */
+  position: relative;
+  top: -26%;      /* espaçamento do topo */
+  left: 6%;     /* espaçamento da esquerda */
   max-width: 28%; /* reduz proporcionalmente */
   height: auto;   /* mantém proporção */
   z-index: 2;
@@ -103,22 +103,41 @@ section {
 }
 
 .objeto2 {
-  position: absolute;
+  position: relative;
   top: 12%;       /* ajusta verticalmente para mais ou menos centro */
-  left: 50%;      /* centraliza horizontalmente */
+  left: 18%;      /* centraliza horizontalmente */
+  transform: translateX(-50%); /* garante centralização exata */
+  max-width: 40%; /* proporcionalmente menor */
+  height: 100vh;
+  z-index: 1;     /* fica atrás do objeto1 na sobreposição */
+  opacity: 98%;
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+}
+
+.b3a-contenvpan  .b3b-contenvpan{
+  position: relative;   /* necessário para posicionar imagens dentro */
+  width: 100%;
+  height: 100vh;
+}
+
+.b3b-contenvpan {
+    background-image: url("/imgs/3_copiar.jpg");
+    background-repeat: no-repeat;
+    background-position: left; /* ou center center, se preferir */
+    background-size: auto 100%;       /* altura da viewport, mantém proporção */
+}
+
+.objeto3 {
+  position: relative;
+  top: -42%;       
+  left: 20%;
   transform: translateX(-50%); /* garante centralização exata */
   max-width: 40%; /* proporcionalmente menor */
   height: auto;
   z-index: 1;     /* fica atrás do objeto1 na sobreposição */
   opacity: 98%;
   filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
-}
 
-.b3a-contenvpan {
-  position: relative;   /* necessário para posicionar imagens dentro */
-  width: 100%;
-  height: 100vh;
 }
-
 
 

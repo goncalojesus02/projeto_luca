@@ -67,19 +67,31 @@
     });
 
   
-   function zoom(src) {
-      const fullscreen = document.createElement('div');
-      fullscreen.classList.add('fullscreen');
+  function zoom(src, elemento) {
+  const fullscreen = document.createElement('div');
+  fullscreen.classList.add('fullscreen');
 
-      const img = document.createElement('img');
-      img.src = src;
+  const img = document.createElement('img');
+  img.src = src;
 
-      fullscreen.appendChild(img);
+  fullscreen.appendChild(img);
 
-      fullscreen.addEventListener('click', () => {
-        fullscreen.remove();
-      });
+  // Quando clicar no fullscreen, ele fecha
+  fullscreen.addEventListener('click', () => {
+    fullscreen.remove();
+  });
 
-      document.body.appendChild(fullscreen);
+  // Adiciona ao body
+  document.body.appendChild(fullscreen);
+
+  // --- Scroll suave para a próxima seção ---
+  // Espera a animação de zoom terminar antes de rolar
+  setTimeout(() => {
+    const secAtual = elemento.closest("section");
+    const proxSec = secAtual.nextElementSibling;
+    if (proxSec) {
+      proxSec.scrollIntoView({ behavior: "smooth" });
     }
+  }, 500); // 400ms = tempo da animação zoomIn
+}
 

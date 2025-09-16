@@ -9,17 +9,20 @@
 <body id="scroll_m">
     <section class="b1-envelope"> <!-- background--> </section>
    <section class="b2-contenv">
-    <img src="/imgs/objeto_1_frente.png" alt="objeto1" class="cartao1" onclick="zoom(this.src)">
+    <img src="/imgs/objeto_1_frente.png" alt="objeto1" class="cartao1" onclick="zoom(this.src, this)">
    </section>
 
     <section class="b3-contenvpan">
         
         <section class="b3a-contenvpan">
-            <img src="/imgs/objeto_1_frente.png" alt="objeto1" class="objeto1">
-            <img src="/imgs/objeto2.png" alt="objeto2" class="objeto2">
-            <img src="/" alt="">
+            <img src="/imgs/objeto_1_frente.png" alt="objeto1" class="objeto1" onclick="zoom(this.src)">
+            <img src="/imgs/objeto2.png" alt="objeto2" class="objeto2" onclick= "zoom(this.src, this)">
         </section>
-        <section class="b3b-contenvpan"></section>
+        <section class="b3b-contenvpan">
+            <img src="/imgs/objeto_1_frente.png" alt="objeto1" class="objeto1" onclick="zoom(this.src)">
+            <img src="/imgs/objeto2.png" alt="objeto2" class="objeto2" onclick= "zoom(this.src)">
+            <img src="/imgs/2_capa.png" alt="objeto3" class="objeto3" onclick="zoom(this.src, this)"></section>
+        
         <section class="b3c-contenvpan"></section>
         <section class="b3d-contenvpan"></section>
         <section class="b3f-contenvpan"></section>
