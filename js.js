@@ -67,31 +67,19 @@
     });
 
   
-  document.addEventListener('DOMContentLoaded', () => {
-  const cardImages = document.querySelectorAll('.card-front img, .card-back img');
-
-  cardImages.forEach(img => {
-    img.style.cursor = 'pointer';
-
-    img.addEventListener('click', (e) => {
-      e.stopPropagation(); // evita conflito com hover/flip
-
-      // cria overlay fullscreen
+   function zoom(src) {
       const fullscreen = document.createElement('div');
       fullscreen.classList.add('fullscreen');
 
-      const zoomImg = document.createElement('img');
-      zoomImg.src = img.src;
+      const img = document.createElement('img');
+      img.src = src;
 
-      fullscreen.appendChild(zoomImg);
+      fullscreen.appendChild(img);
 
-      // clique no overlay remove
       fullscreen.addEventListener('click', () => {
         fullscreen.remove();
       });
 
       document.body.appendChild(fullscreen);
-    });
-  });
-});
+    }
 

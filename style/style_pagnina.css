@@ -7,7 +7,7 @@ body {
     overflow-y: hidden;         /*sem scroll vertical */
     scroll-snap-type: x mandatory;  /* "trava" no eixo X */
     scroll-behavior: smooth;   /* rolagem suave */
-  position: relative;
+    position: relative;
 }
 
 section {
@@ -16,6 +16,7 @@ section {
     height: 100vh;
     scroll-snap-align: start; /* alinha o início de cada section */
     gap: 3px ;
+    flex-shrink: 0;
 }
 
 .b1-envelope{
@@ -26,54 +27,25 @@ section {
 }
 
 .b2-contenv {
+   display: flex;
+   position: relative;          /* permite posicionamento relativo dos filhos */
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;     /* centraliza horizontalmente */
+  align-items: center;         /* centraliza verticalmente */
   background-image: url("/imgs/fundocontenv.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-
-  display: flex;               /* define flex container */
-  justify-content: center;     /* centraliza horizontalmente */
-  align-items: center;         /* centraliza verticalmente */
-  height: 100vh;               /* garante altura da viewport */
 }
 
-.card-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+.cartao1 {
+    position: relative;          /* você ainda pode usar top/left para ajustes */
+    top: -8%;
+    left: -10%;
+    max-width:28%;              /* tamanho proporcional da imagem */
 
-.card {
-  width: 80%;        /* largura proporcional */
-  max-width: 400px;  /* limite máximo */
-  aspect-ratio: 4 / 3; /* mantém proporção do card */
-  perspective: 1000px; 
-  cursor: pointer;
-}
-
-.card-inner {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
-  transform-style: preserve-3d;
-}
-
-.card-front, .card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  overflow: hidden;
-}
-
-.card-front img, .card-back img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* mantém proporção da imagem */
-}
-
-.card-back {
-  transform: rotateY(180deg);
+    filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
 }
 
 
@@ -98,7 +70,7 @@ section {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(37,0,202,0.9);
+  background: rgba(255, 255, 255, 0.952);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,8 +80,7 @@ section {
 .fullscreen img {
   max-width: 90vw;
   max-height: 90vh;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
   animation: zoomIn 0.4s ease;
 }
 
