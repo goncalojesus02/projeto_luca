@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+  <meta charset="utf-8">
+  <title>teste gravidade</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      overflow: hidden;
+    }
+    #objeto {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #objeto img {
+      width: 20em;
+      height: 10em;
+      object-fit: cover;
+      
+    }
+  </style>
+</head>
+<body>
+  <div id="objeto">
+    <img src="/imgs/capa_frente.jpg" alt="imagem" />
+  </div>
+
+  <script>
+    const objeto = document.getElementById("objeto");
+
+    // Posição central
+    const centro = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+    let alvo = { ...centro }; // posição de destino
+    let pos = { ...centro }; // posição atual
+    let velocidade = { x: 0, y: 0 }; // para dar efeito mais suave
+
+    const raioEfeito = 200; // distância máxima de atração
+    const forca = 0.1; // força de atração
+    const retorno = 0.05; // força de retorno ao centro
+    const amortecimento = .3; // suavidade do movimento
+
+    function animar() {
+      // aplica velocidade em direção ao alvo
+      velocidade.x += (alvo.x - pos.x) * (alvo === centro ? retorno : forca);
+      velocidade.y += (alvo.y - pos.y) * (alvo === centro ? retorno : forca);
+
+      // aplica amortecimento para dar efeito natural
+      velocidade.x *= amortecimento;
+      velocidade.y *= amortecimento;
+
+      pos.x += velocidade.x;
+      pos.y += velocidade.y;
+
+      img1.style.left = pos.x - img1.offsetWidth / 2 + "px";
+      img1.style.top = pos.y - img1.offsetHeight / 2 + "px";
+
+      requestAnimationFrame(animar);
+    }
+
+    window.addEventListener("mousemove", (e) => {
+      const dx = e.clientX - centro.x;
+      const dy = e.clientY - centro.y;
+      const distancia = Math.sqrt(dx * dx + dy * dy);
+
+      if (distancia < raioEfeito) {
+        alvo = { x: e.clientX, y: e.clientY };
+      } else {
+        alvo = centro;
+      }
+    });
+
+    animar();
+
+    // ajusta centro ao redimensionar a janela
+    window.addEventListener("resize", () => {
+      centro.x = window.innerWidth / 2;
+      centro.y = window.innerHeight / 2;
+      alvo = { ...centro };
+    });
+  </script>
+</body>
+</html>

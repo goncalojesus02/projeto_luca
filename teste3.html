@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página com 3 colunas</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      height: 100vh;
+    }
+
+    .coluna {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ddd;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px 0;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    li:hover {
+      color: rgb(0, 0, 255);
+    }
+
+    .conteudo-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .imagem-central {
+      position: absolute;
+      width: 200px;
+      height: auto;
+      display: none;
+      transition: transform 0.2s ease-out;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Coluna 1 -->
+  <div class="coluna">
+    <ul>
+      <li id="item1">Item com efeito</li>
+      <li>Outro item</li>
+      <li>Mais um</li>
+    </ul>
+  </div>
+
+  <!-- Coluna 2 (conteúdo visual) -->
+  <div class="coluna conteudo-visual">
+    <img id="imagem" class="imagem-central" src="https://via.placeholder.com/200" alt="Imagem efeito">
+  </div>
+
+  <!-- Coluna 3 -->
+  <div class="coluna">
+    <ul>
+      <li>Item A</li>
+      <li>Item B</li>
+      <li>Item C</li>
+    </ul>
+  </div>
+
+  <script>
+    const item1 = document.getElementById("item1");
+    const imagem = document.getElementById("imagem");
+    const container = document.querySelector(".conteudo-visual");
+
+    let centerX = container.offsetWidth / 2;
+    let centerY = container.offsetHeight / 2;
+
+    let posX = centerX;
+    let posY = centerY;
+
+    let targetX = centerX;
+    let targetY = centerY;
+
+    // Mostrar imagem definitivamente ao clicar no item
+    item1.addEventListener("click", () => {
+      imagem.style.display = "block";
+      posX = centerX;
+      posY = centerY;
+      imagem.style.left = `${centerX - imagem.width / 2}px`;
+      imagem.style.top = `${centerY - imagem.height / 2}px`;
+    });
+
+    // Gravidade simulada com movimento do mouse
+    container.addEventListener("mousemove", (e) => {
+      if (imagem.style.display !== "block") return; // só funciona se a imagem estiver visível
+
+      const rect = container.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const dx = mouseX - centerX;
+      const dy = mouseY - centerY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      const limite = 150; // distância máxima antes de puxar de volta
+
+      if (dist < limite) {
+        targetX = mouseX;
+        targetY = mouseY;
+      } else {
+        targetX = centerX;
+        targetY = centerY;
+      }
+    });
+
+    // Animação suave
+    function animate() {
+      posX += (targetX - posX) * 0.1;
+      posY += (targetY - posY) * 0.1;
+
+      imagem.style.left = `${posX - imagem.width / 2}px`;
+      imagem.style.top = `${posY - imagem.height / 2}px`;
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Clique na imagem abre outra página
+    imagem.addEventListener("click", () => {
+      window.location.href = "https://www.google.com"; // mude para o link desejado
+    });
+
+    // Ajustar centro ao redimensionar
+    window.addEventListener("resize", () => {
+      centerX = container.offsetWidth / 2;
+      centerY = container.offsetHeight / 2;
+    });
+  </script>
+</body>
+</html>

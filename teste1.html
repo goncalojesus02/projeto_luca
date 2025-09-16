@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <title>imagens sobrepostas responsivas</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .imagens {
+
+      position: relative; /* referencia para as imagens absolutas */
+      width: 25vw;        /* largura base proporcional à viewport */
+      height: auto;
+      position: relative; /* referencia para as imagens absolutas */
+      width: 25vw;        /* largura base proporcional à viewport */
+      height: auto;
+      aspect-ratio: 4/5;  /* garante proporção aproximada */
+    }
+
+    /* container apenas para posicionar no lado esquerdo */
+    
+    .imagens {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .imagens img {
+      position: absolute;
+      top: 0;
+      left: 0;
+       max-width: 25vw;   /* cada imagem ocupa até 25% da largura da viewport */
+      height: auto;      /* mantém proporção original */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease, z-index 0.3s ease;
+    }
+
+    /* rotações diferentes */
+    .img1 { transform: rotate(-20deg); z-index: 1; }
+    .img2 { transform: rotate(0deg);  z-index: 2; opacity: 70%;}
+    .img3 { transform: rotate(40deg);  z-index: 3; opacity: 80%; }
+
+    /* destaque no hover */
+    .imagens img:hover {
+      transform: scale(1.1) rotate(0deg);
+      z-index: 10;
+    }
+
+    /* zoom fullscreen */
+    .fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(37, 0, 202, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .fullscreen img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      animation: zoomIn 0.4s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    
+  </style>
+</head>
+<body>
+
+  <div class="imagens">
+    <img src="/imgs//3.jpg" 
+         alt="Imagem 1" class="img1" onclick="zoom(this.src)">
+    <img src="/imgs/objeto_1_frente.png" 
+         alt="Imagem 2" class="img2" onclick="zoom(this.src)">
+    <img src="/imgs/objeto_1_costas.png" 
+         alt="Imagem 3" class="img3" onclick="zoom(this.src)">
+  </div>
+
+  <script>
+    function zoom(src) {
+      const fullscreen = document.createElement('div');
+      fullscreen.classList.add('fullscreen');
+
+      const img = document.createElement('img');
+      img.src = src;
+
+      fullscreen.appendChild(img);
+
+      fullscreen.addEventListener('click', () => {
+        fullscreen.remove();
+      });
+
+      document.body.appendChild(fullscreen);
+    }
+  </script>
+
+</body>
+</html>

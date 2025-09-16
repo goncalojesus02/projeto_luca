@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Tecido que se desdobra</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-position 1s ease; /* animação suave */
+
+      /* imagem larga escolhida */
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') 0 center / cover no-repeat;
+    }
+
+    #tecido {
+      width: 200px;
+      height: 200px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cotton_flower.jpg/320px-Cotton_flower.jpg') center/contain no-repeat;
+      cursor: pointer;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div id="tecido"></div>
+
+  <script>
+    const tecido = document.getElementById("tecido");
+
+    const larguraFrame = 200; // "quantos px andar" a cada clique
+    const totalFrames = 5;    // quantos passos você quer mostrar
+
+    let frameAtual = 0;
+
+    tecido.addEventListener("click", () => {
+      frameAtual = (frameAtual + 1) % totalFrames;
+      const novaPos = -(frameAtual * larguraFrame);
+      document.body.style.backgroundPosition = `${novaPos}px center`;
+    });
+  </script>
+</body>
+</html>
