@@ -75,10 +75,13 @@
 
   <script>
     const steps = [
-      { src: "/imgs/Eenvelope_Aaberto.png", objects: [], next: 1 },
-      { src: "/imgs/1_copiar.jpg", objects: [{ src: "/imgs/objeto_1_frente.png", left:28, top:20, width:28, nextStep:2 }] },
-      { src: "/imgs/2_copiar.jpg", objects: [ { src: "/imgs/objeto_1_frente.png", left:2, top:9, width:21, zindex:2 }, { src: "/imgs/objeto2.png", left:10, top:12, width:30, zindex:1, nextStep:3 } ] },
-      { src: "/imgs/3_copiar.jpg", objects: [ { src: "/imgs/objeto_1_frente.png", left:2, top:8, width:15, zindex:2 }, { src: "/imgs/objeto2.png", left:10, top:12, width:22, zindex:1, nextStep:3 }, { src:"/imgs/2_capa.png", left:30, top:5, width:20, zindex:0, nextStep:4 } ] },
+      { src:"/imgs/envelope_aberto.png", objects: [], next: 1 },
+      { src: "/imgs/secao1/1.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left:28, top:20, width:28, nextStep:2 }] },
+      { src: "/imgs/secao2/2.jpg", objects: [ { src: "/imgs/secao1/objeto-1-frente.png", left:2, top:9, width:21, zindex:2 }, { src: "/imgs/secao2/objeto_2.png", left:10, top:12, width:30, zindex:1, nextStep:3 } ] },
+
+      { src: "/imgs/secao3/3.jpg", objects: [ { src: "/imgs/secao1/objeto-1-frente.png", left:2, top:9, width:12, zindex:2 }, { src: "/imgs/secao2/objeto_2.png", left:10, top:12, width:22, zindex:1, nextStep:3 }, { src: "/imgs/secao3/book1/1_capa.png",  left:30, top:5, width:20, zindex:0, nextStep:4 } ] },
+
+
       { src: "/imgs/4_copiar.jpg", objects: [] },
       { src: "/imgs/5_copiar.jpg", objects: [] },
       { src: "/imgs/6_copiar.jpg", objects: [] },
@@ -201,6 +204,93 @@
     });
 
     loadStep(0);
+  // Lista de imagens para o "book1"
+    const book1Gallery = [
+      "/imgs/secao3/book1/1_capa.png",
+      "/imgs/secao3/book1/1_pag1.png",
+      "/imgs/secao3/book1/1_pag2.png",
+      "/imgs/secao3/book1/1_pag3.png",
+      "/imgs/secao3/book1/1_costas.png"
+    ];
+
+    function openGallery(startIndex = 0){
+      let currentIndex = startIndex;
+
+      const fullscreen = document.createElement('div');
+      fullscreen.className = 'fullscreen';
+
+      const zimg = document.createElement('img');
+      zimg.src = book1Gallery[currentIndex];
+      fullscreen.appendChild(zimg);
+
+      // Botões de navegação
+      const prevBtn = document.createElement('div');
+      prevBtn.innerHTML = "&#10094;";
+      prevBtn.style.position = "absolute";
+      prevBtn.style.left = "20px";
+      prevBtn.style.fontSize = "3rem";
+      prevBtn.style.cursor = "pointer";
+      prevBtn.style.userSelect = "none";
+      prevBtn.style.color = "#333";
+
+      const nextBtn = document.createElement('div');
+      nextBtn.innerHTML = "&#10095;";
+      nextBtn.style.position = "absolute";
+      nextBtn.style.right = "20px";
+      nextBtn.style.fontSize = "3rem";
+      nextBtn.style.cursor = "pointer";
+      nextBtn.style.userSelect = "none";
+      nextBtn.style.color = "#333";
+
+      fullscreen.appendChild(prevBtn);
+      fullscreen.appendChild(nextBtn);
+
+      function showImage(i){
+        currentIndex = (i + book1Gallery.length) % book1Gallery.length;
+        zimg.src = book1Gallery[currentIndex];
+      }
+
+      prevBtn.addEventListener('click', e=>{
+        e.stopPropagation();
+        showImage(currentIndex-1);
+      });
+      nextBtn.addEventListener('click', e=>{
+        e.stopPropagation();
+        showImage(currentIndex+1);
+      });
+
+      fullscreen.addEventListener('click', e=>{
+        if(e.target===fullscreen){
+          if(book1Gallery[currentIndex].includes("1_costas.png")){
+            fullscreen.remove();
+            loadStep(4); // Avança para step 4
+          } else {
+            fullscreen.remove();
+          }
+        }
+      });
+
+      document.addEventListener('keydown', function galleryHandler(e){
+        if(e.key==='ArrowLeft') showImage(currentIndex-1);
+        if(e.key==='ArrowRight') showImage(currentIndex+1);
+        if(e.key==='Escape'){
+          fullscreen.remove();
+          document.removeEventListener('keydown', galleryHandler);
+        }
+      });
+
+      document.body.appendChild(fullscreen);
+    }
+
+    // Hook na função zoom original: se for a capa do book1, abre a galeria
+    const originalZoom = zoom;
+    zoom = function(src, nextStep){
+      if(src.includes("/imgs/secao3/book1/1_capa.png")){
+        openGallery(0);
+      } else {
+        originalZoom(src, nextStep);
+      }
+    }
   </script>
 </body>
 </html>

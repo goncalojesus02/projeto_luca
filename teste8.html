@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <title>luca project</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    #stage {
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      scroll-behavior: smooth;
+    }
+    .image-wrap {
+      position: relative;
+      display: inline-block;
+      height: 100vh;
+    }
+    #stageImg {
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .hotspot-object {
+      position: absolute;
+      cursor: pointer;
+      pointer-events: auto;
+      z-index: 2;
+      filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.65));
+      height: auto;
+    }
+    .fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .fullscreen img {
+      max-width: 90vw;
+      max-height: 90vh;
+      filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.4));
+      animation: zoomIn 0.4s ease;
+      cursor: pointer;
+    }
+    @keyframes zoomIn {
+      from {transform: scale(0.5); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <div class="image-wrap">
+      <img id="stageImg" src="" draggable="false">
+      <div id="overlay" class="overlay"></div>
+    </div>
+  </div>
+
+  <script>
+    const steps = [
+      { src: "/imgs/envelope_aberto.png", objects: [], next: 1 },
+      { src: "/imgs/secao1/1.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left: 28, top: 20, width: 28, nextStep: 2 }] },
+      { src: "/imgs/secao2/2.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 21, zindex: 2 }, { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 30, zindex: 1, nextStep: 3 }] },
+      { src: "/imgs/secao3/3.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 12, zindex: 2 }, { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 22, zindex: 1, nextStep: 3 }, { src: "/imgs/secao3/book1/1_capa.png", left: 30, top: 5, width: 20, zindex: 0, nextStep: 4 }] },
+      { 
+        src: "/imgs/secao4/4.jpg", 
+        objects: [ 
+          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 12, zindex: 2 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 22, zindex: 1, nextStep: 3 }, 
+          { src: "/imgs/secao3/book1/1_capa.png", left: 30, top: 5, width: 20, zindex: 0 }, 
+          { src:"/imgs/secao4/Anthotype_1_F.png", left: 52, top: 28, width: 8, zindex: 8 }, 
+          { src:"/imgs/secao4/Anthotype_2_F.png", left: 52, top: 28, width: 8, zindex:7, rotate: 10 }, 
+          { src:"/imgs/secao4/Anthotype_3_F.png", left: 52, top: 28, width: 8, zindex:7, rotate: -10 }, 
+          { src:"/imgs/secao4/Anthotype_4_F.png", left: 52, top: 28, width: 8, zindex:7, rotate: 15 }, 
+          { src:"/imgs/secao4/Anthotype_5_F.png", left: 52, top: 28, width: 8, zindex:7, rotate: 20 }, 
+          { src:"/imgs/secao4/Anthotype_6_F.png", left: 52, top: 28, width: 8, zindex:7, rotate: -15 }, 
+          { src:"/imgs/secao4/Anthotype_7_F.png", left: 52, top: 28, width: 8, zindex:7, rotate: 18 }, 
+          { src:"/imgs/secao4/Anthotype_8_F.png", left: 52, top: 28, width: 8, zindex:7, rotate: -15 }   
+        ] 
+      },
+      { src: "/imgs/5_copiar.jpg", objects: [] },
+      { src: "/imgs/6_copiar.jpg", objects: [] },
+      { src: "/imgs/7_copiar.jpg", objects: [] },
+      { src: "/imgs/8_copiar.jpg", objects: [] },
+      { src: "/imgs/9_copiar.jpg", objects: [] },
+      { src: "/imgs/10_copiar.jpg", objects: [] },
+      { src: "/imgs/11_copiar.jpg", objects: [] }
+    ];
+
+    const img = document.getElementById('stageImg');
+    const overlay = document.getElementById('overlay');
+    const wrap = document.querySelector('.image-wrap');
+    let currentStep = 0;
+
+    const book1Gallery = [
+      "/imgs/secao3/book1/1_capa.png",
+      "/imgs/secao3/book1/1_pag1.png",
+      "/imgs/secao3/book1/1_pag2.png",
+      "/imgs/secao3/book1/1_pag3.png",
+      "/imgs/secao3/book1/1_costas.png"
+    ];
+
+    const anthotypes = [
+      "/imgs/secao4/Anthotype_1_F.png",
+      "/imgs/secao4/Anthotype_2_F.png",
+      "/imgs/secao4/Anthotype_3_F.png",
+      "/imgs/secao4/Anthotype_4_F.png",
+      "/imgs/secao4/Anthotype_5_F.png",
+      "/imgs/secao4/Anthotype_6_F.png",
+      "/imgs/secao4/Anthotype_7_F.png",
+      "/imgs/secao4/Anthotype_8_F.png"
+    ];
+
+    function preload(src) { if(src){ new Image().src = src; } }
+    function clearOverlay() { overlay.innerHTML = ''; }
+
+    function createObjects(objects){
+      clearOverlay();
+      objects.forEach(o=>{
+        const obj = document.createElement('img');
+        obj.src = o.src;
+        obj.className = 'hotspot-object';
+        obj.style.left = o.left + '%';
+        obj.style.top = o.top + '%';
+        if(o.width!==undefined) obj.style.width = o.width + '%';
+        obj.style.height = o.height ? o.height + '%' : 'auto';
+        obj.style.zIndex = o.zindex !== undefined ? o.zindex : 2;
+
+        if(o.rotate !== undefined){
+          obj.style.transform = `rotate(${o.rotate}deg)`;
+        }
+
+        obj.addEventListener('click', e=>{
+          e.stopPropagation();
+          openZoom(o.src, o.nextStep);
+        });
+        overlay.appendChild(obj);
+      });
+    }
+
+    function loadStep(i){
+      if(i < 0 || i >= steps.length) return;
+      currentStep = i;
+      const step = steps[i];
+      clearOverlay();
+      img.src = step.src;
+      preload(steps[i+1]?.src);
+
+      img.onload = () => {
+        if(i === 0){ 
+          wrap.style.width = "100vw";
+          wrap.style.height = "100vh";
+          img.style.width = "100vw";
+          img.style.height = "100vh";
+          img.style.objectFit = "contain";
+        } else if(i === 1){
+          wrap.style.width = "100vw";
+          wrap.style.height = "100vh";
+          img.style.width = "100vw";
+          img.style.height = "100vh";
+          img.style.objectFit = "cover";
+        } else {
+          wrap.style.height = "100vh";
+          wrap.style.width = img.naturalWidth * (wrap.clientHeight / img.naturalHeight) + 'px';
+          img.style.height = "100vh";
+          img.style.width = "auto";
+          img.style.objectFit = "initial";
+        }
+
+        createObjects(step.objects || []);
+        img.onclick = (i === 0) ? () => loadStep(step.next) : null;
+
+        const stage = document.getElementById('stage');
+        stage.scrollLeft = wrap.scrollWidth - stage.clientWidth;
+      };
+    }
+
+    function openZoom(src, nextStep){
+      // Book1 gallery
+      if(src.includes("/imgs/secao3/book1/1_capa.png")){
+        let currentIndex = 0;
+        const fullscreen = document.createElement('div');
+        fullscreen.className = 'fullscreen';
+        const zimg = document.createElement('img');
+        zimg.src = book1Gallery[currentIndex];
+        fullscreen.appendChild(zimg);
+        document.body.appendChild(fullscreen);
+
+        zimg.addEventListener('click', e=>{
+          e.stopPropagation();
+          if(currentIndex < book1Gallery.length - 1){
+            currentIndex++;
+            zimg.src = book1Gallery[currentIndex];
+          } else {
+            fullscreen.remove();
+            loadStep(4);
+          }
+        });
+
+        fullscreen.addEventListener('click', e=>{
+          if(e.target === fullscreen) fullscreen.remove();
+        });
+
+      } 
+      // Anthotype carousel
+      else if(anthotypes.includes(src)){
+        const fullscreen = document.createElement('div');
+        fullscreen.className = 'fullscreen';
+
+        const container = document.createElement('div');
+        container.style.display = 'flex';
+        container.style.flexDirection = 'row';
+        container.style.gap = '6px';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'flex-start';
+        container.style.overflowX = 'auto';
+        container.style.height = '90%';
+        container.style.padding = '10px';
+
+        anthotypes.forEach((imgSrc, index) => {
+          const zimg = document.createElement('img');
+          zimg.src = imgSrc;
+          zimg.style.height = '80%';
+          zimg.style.cursor = 'pointer';
+          zimg.style.transform = 'rotate(0deg)';
+          zimg.addEventListener('click', e => e.stopPropagation());
+          container.appendChild(zimg);
+        });
+
+        fullscreen.appendChild(container);
+        document.body.appendChild(fullscreen);
+
+        // Scroll para centralizar a primeira imagem
+        const primeiraImg = container.querySelector('img');
+        primeiraImg.scrollIntoView({behavior:'auto', block:'nearest', inline:'center'});
+
+        fullscreen.addEventListener('click', e=>{
+          if(e.target === fullscreen){
+            fullscreen.remove();
+            loadStep(5);
+          }
+        });
+
+      } 
+      // Normal zoom
+      else {
+        const fullscreen = document.createElement('div');
+        fullscreen.className = 'fullscreen';
+        const zimg = document.createElement('img');
+        zimg.src = src;
+        fullscreen.appendChild(zimg);
+        fullscreen.addEventListener('click', e=>{
+          if(e.target === fullscreen){
+            fullscreen.remove();
+            if(nextStep !== undefined) loadStep(nextStep);
+          }
+        });
+        document.body.appendChild(fullscreen);
+      }
+    }
+
+    document.addEventListener('keydown', e=>{
+      if(e.key === 'ArrowRight') loadStep(currentStep + 1);
+      if(e.key === 'ArrowLeft') loadStep(currentStep - 1);
+    });
+
+    window.addEventListener('resize', ()=>{ if(steps[currentStep].objects) loadStep(currentStep); });
+
+    loadStep(0);
+  </script>
+</body>
+</html>
