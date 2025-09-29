@@ -42,24 +42,52 @@
       height: auto;
     }
     .fullscreen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(255,255,255,0.95);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #ffffff; /* fundo branco sólido */
+    display: flex;
+    box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
     .fullscreen img {
-      max-width: 90vw;
-      max-height: 90vh;
-      filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.4));
-      animation: zoomIn 0.4s ease;
-      cursor: pointer;
-    }
+    max-width: 90vw;
+    max-height: 90vh;
+    filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.4));
+    animation: zoomIn 0.4s ease;
+    cursor: pointer;
+  }
+
+     /* Novo fullscreen só para o Book3 (secção 8) */
+  .fullscreen-book3 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('/imgs/secao8/Tecido-+-livro_aberto.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  }
+
+  .fullscreen-book3 img {
+    max-width: 80%;
+    max-height: 80%;
+    box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+    cursor: pointer;
+    border-radius: 6px;
+    animation: zoomIn 0.4s ease;
+  }
     @keyframes zoomIn {
       from {transform: scale(0.5); opacity: 0;}
       to {transform: scale(1); opacity: 1;}
@@ -148,7 +176,7 @@
           { src:"/imgs/secao4/Anthotype_6_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: -15 }, 
           { src:"/imgs/secao4/Anthotype_7_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: 18 }, 
           { src:"/imgs/secao4/Anthotype_8_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: -15 },
-           { src: "/imgs/secao5/book2/2_capa.png", left: 42, top: 5, width: 12, zindex: 0 },
+           { src: "/imgs/secao5/book2/2_capa.png", left: 42, top: 5, width: 10, zindex: 0 },
           { src:"/imgs/secao6/Ciano_1_Frente.png", left: 58, top: 28, width: 6, zindex: 8 },
           { src:"/imgs/secao6/Ciano_2_Frente.png", left: 58, top: 28, width: 6, zindex: 1, rotate:4 }, 
           { src:"/imgs/secao6/Ciano_3_Frente.png", left: 58, top: 28, width: 6, zindex: 2, rotate:-4 },
@@ -161,11 +189,148 @@
           { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 72, top: 28, width: 6, zindex: 7},
       ] },
       { src: "/imgs/secao8/8.jpg", objects: [
+          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 8, zindex: 2 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 6, top: 12, width: 10, zindex: 1, nextStep: 3 }, 
+          { src: "/imgs/secao3/book1/1_capa.png", left: 16, top: 10, width: 10, zindex: 0 }, 
+          { src:"/imgs/secao4/Anthotype_1_F.png", left: 32, top: 28, width: 5, zindex: 8 }, 
+          { src:"/imgs/secao4/Anthotype_2_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: 10 }, 
+          { src:"/imgs/secao4/Anthotype_3_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: -10 }, 
+          { src:"/imgs/secao4/Anthotype_4_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: 15 }, 
+          { src:"/imgs/secao4/Anthotype_5_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: 20 }, 
+          { src:"/imgs/secao4/Anthotype_6_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: -15 }, 
+          { src:"/imgs/secao4/Anthotype_7_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: 18 }, 
+          { src:"/imgs/secao4/Anthotype_8_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: -15 },
+           { src: "/imgs/secao5/book2/2_capa.png", left: 42, top: 5, width: 12, zindex: 0 },
+          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 58, top: 28, width: 6, zindex: 8 },
+          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 58, top: 28, width: 6, zindex: 1, rotate:4 }, 
+          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 58, top: 28, width: 6, zindex: 2, rotate:-4 },
+          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 58, top: 28, width: 6, zindex: 3 , rotate: 5},
+          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 58, top: 28, width: 6, zindex: 4, rotate: -3 },
+          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 58, top: 28, width: 6, zindex: 5, rotate: 3 },
+          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 58, top: 28, width: 6, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 58, top: 28, width: 6, zindex: 7, rotate: 6},
+          { src:"/imgs/secao7/Cianotipo_SINGLE_1.png", left: 65, top: 28, width: 6, zindex: 7},
+          { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 72, top: 28, width: 6, zindex: 7},
+
           { src: "/imgs/secao8/tecido_booklet_fechado.png", left: 82, top: 2, width: 9, zindex: 7},
       ] },
-      { src: "/imgs/9_copiar.jpg", objects: [] },
-      { src: "/imgs/10_copiar.jpg", objects: [] },
-      { src: "/imgs/11_copiar.jpg", objects: [] }
+
+      { src: "/imgs/secao9/9.jpg", objects: [
+          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 8, zindex: 2, rotate:-2 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 12, width: 8, zindex: 1, nextStep: 3 },
+
+          { src: "/imgs/secao3/book1/1_capa.png", left: 12, top: 10, width: 8, zindex: 0 }, 
+
+          { src:"/imgs/secao4/Anthotype_1_F.png", left: 22, top: 28, width: 4, zindex: 8 }, 
+          { src:"/imgs/secao4/Anthotype_2_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 10 }, 
+          { src:"/imgs/secao4/Anthotype_3_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -10 }, 
+          { src:"/imgs/secao4/Anthotype_4_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 15 }, 
+          { src:"/imgs/secao4/Anthotype_5_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 20 }, 
+          { src:"/imgs/secao4/Anthotype_6_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -15 }, 
+          { src:"/imgs/secao4/Anthotype_7_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 18 }, 
+          { src:"/imgs/secao4/Anthotype_8_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -15 },
+
+          { src: "/imgs/secao5/book2/2_capa.png", left: 28, top: 5, width: 8, zindex: 0 },
+
+          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 40, top: 24, width: 4, zindex: 8 },
+          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 40, top: 24, width: 4, zindex: 1, rotate:4 }, 
+          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 40, top: 24, width: 4, zindex: 2, rotate:-4 },
+          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 40, top: 24, width: 4, zindex: 3 , rotate: 5},
+          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 40, top: 24, width: 4, zindex: 4, rotate: -3 },
+          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 40, top: 24, width: 4, zindex: 5, rotate: 3 },
+          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 40, top: 24, width: 4, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 40, top: 24, width: 4, zindex: 7, rotate: 6},
+
+          { src:"/imgs/secao7/Cianotipo_SINGLE_1.png", left: 47, top: 24, width: 6, zindex: 7},
+          { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 54, top: 14, width: 6, zindex: 7},
+
+          { src: "/imgs/secao8/Tecido-+-livro_aberto.png", left: 59, top: -4, width: 20, zindex: 7},
+          { src: "/imgs/secao8/book3/3_costas.png", left: 66, top: 10, width: 8, zindex: 8},
+          { src: "/imgs/secao8/book3/3_costas.png", left: 66, top: 10, width: 8, zindex: 8},
+
+          { src: "/imgs/secao9/book4/4_capa.png", left: 75, top: 10, width: 14, zindex: 8},
+
+      ] },
+
+      { src: "/imgs/secao10/10.jpg", objects: [
+         { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 8, zindex: 2, rotate:-2 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 12, width: 8, zindex: 1, nextStep: 3 },
+
+          { src: "/imgs/secao3/book1/1_capa.png", left: 12, top: 10, width: 8, zindex: 0 }, 
+
+          { src:"/imgs/secao4/Anthotype_1_F.png", left: 22, top: 28, width: 4, zindex: 8 }, 
+          { src:"/imgs/secao4/Anthotype_2_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 10 }, 
+          { src:"/imgs/secao4/Anthotype_3_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -10 }, 
+          { src:"/imgs/secao4/Anthotype_4_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 15 }, 
+          { src:"/imgs/secao4/Anthotype_5_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 20 }, 
+          { src:"/imgs/secao4/Anthotype_6_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -15 }, 
+          { src:"/imgs/secao4/Anthotype_7_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 18 }, 
+          { src:"/imgs/secao4/Anthotype_8_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -15 },
+
+          { src: "/imgs/secao5/book2/2_capa.png", left: 28, top: 5, width: 8, zindex: 0 },
+
+          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 40, top: 24, width: 4, zindex: 8 },
+          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 40, top: 24, width: 4, zindex: 1, rotate:4 }, 
+          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 40, top: 24, width: 4, zindex: 2, rotate:-4 },
+          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 40, top: 24, width: 4, zindex: 3 , rotate: 5},
+          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 40, top: 24, width: 4, zindex: 4, rotate: -3 },
+          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 40, top: 24, width: 4, zindex: 5, rotate: 3 },
+          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 40, top: 24, width: 4, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 40, top: 24, width: 4, zindex: 7, rotate: 6},
+
+          { src:"/imgs/secao7/Cianotipo_SINGLE_1.png", left: 47, top: 24, width: 6, zindex: 7},
+          { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 54, top: 14, width: 6, zindex: 7},
+
+          { src: "/imgs/secao8/Tecido-+-livro_aberto.png", left: 59, top: -4, width: 20, zindex: 7},
+          { src: "/imgs/secao8/book3/3_costas.png", left: 66, top: 10, width: 8, zindex: 8},
+          { src: "/imgs/secao8/book3/3_costas.png", left: 66, top: 10, width: 8, zindex: 8},
+
+          { src: "/imgs/secao9/book4/4_capa.png", left: 75, top: 10, width: 14, zindex: 8},
+
+          { src: "/imgs/secao10/book5/5_capa.png", left: 80, top: 10, width: 14, zindex: 8},
+      ] },
+
+      { src: "/imgs/secao11/11.jpg", objects: [
+
+          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 8, zindex: 2, rotate:-2 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 12, width: 8, zindex: 1, nextStep: 3 },
+
+          { src: "/imgs/secao3/book1/1_capa.png", left: 12, top: 10, width: 8, zindex: 0 }, 
+
+          { src:"/imgs/secao4/Anthotype_1_F.png", left: 22, top: 28, width: 4, zindex: 8 }, 
+          { src:"/imgs/secao4/Anthotype_2_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 10 }, 
+          { src:"/imgs/secao4/Anthotype_3_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -10 }, 
+          { src:"/imgs/secao4/Anthotype_4_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 15 }, 
+          { src:"/imgs/secao4/Anthotype_5_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 20 }, 
+          { src:"/imgs/secao4/Anthotype_6_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -15 }, 
+          { src:"/imgs/secao4/Anthotype_7_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 18 }, 
+          { src:"/imgs/secao4/Anthotype_8_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -15 },
+
+          { src: "/imgs/secao5/book2/2_capa.png", left: 28, top: 5, width: 8, zindex: 0 },
+
+          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 40, top: 24, width: 4, zindex: 8 },
+          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 40, top: 24, width: 4, zindex: 1, rotate:4 }, 
+          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 40, top: 24, width: 4, zindex: 2, rotate:-4 },
+          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 40, top: 24, width: 4, zindex: 3 , rotate: 5},
+          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 40, top: 24, width: 4, zindex: 4, rotate: -3 },
+          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 40, top: 24, width: 4, zindex: 5, rotate: 3 },
+          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 40, top: 24, width: 4, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 40, top: 24, width: 4, zindex: 7, rotate: 6},
+
+          { src:"/imgs/secao7/Cianotipo_SINGLE_1.png", left: 47, top: 24, width: 6, zindex: 7},
+          { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 54, top: 14, width: 6, zindex: 7},
+
+          { src: "/imgs/secao8/Tecido-+-livro_aberto.png", left: 59, top: -4, width: 20, zindex: 7},
+          { src: "/imgs/secao8/book3/3_costas.png", left: 66, top: 10, width: 8, zindex: 8},
+          { src: "/imgs/secao8/book3/3_costas.png", left: 66, top: 10, width: 8, zindex: 8},
+
+          { src: "/imgs/secao9/book4/4_capa.png", left: 75, top: 10, width: 14, zindex: 8},
+
+          { src: "/imgs/secao10/book5/5_capa.png", left: 80, top: 10, width: 14, zindex: 8},
+
+          { src: "/imgs/secao11/book6/6_capa.png", left: 80, top: 10, width: 14, zindex: 8},
+
+      ] }
     ];
 
     const img = document.getElementById('stageImg');
@@ -190,13 +355,39 @@
     ];
 
     const book3Gallery = [
-      "/imgs/secao8/Tecido-+-livro_aberto.png",
       "/imgs/secao8/book3/3_capa.png",
       "/imgs/secao8/book3/3_pag1.png",
       "/imgs/secao8/book3/3_pag2.png",
       "/imgs/secao8/book3/3_pag3.png",
       "/imgs/secao8/book3/3_costas.png"
     ];
+
+    const book4Gallery = [
+      "/imgs/secao9/book4/4_capa.png",
+      "/imgs/secao9/book4/4_pag1.png",
+      "/imgs/secao9/book4/4_pag2.png",
+      "/imgs/secao9/book4/4_pag3.png",
+      "/imgs/secao9/book4/4_pag4.png",
+      "/imgs/secao9/book4/4_pag5.png",
+      "/imgs/secao9/book4/4_costas.png"
+    ];
+
+    const book5Gallery = [
+      "/imgs/secao10/book5/5_capa.png",
+      "/imgs/secao10/book5/5_pag1.png",
+      "/imgs/secao10/book5/5_pag2.png",
+      "/imgs/secao10/book5/5_pag3.png",
+      "/imgs/secao10/book5/5_costas.png"
+    ];
+
+    const book6Gallery = [
+      "/imgs/secao11/book6/6_capa.png",
+      "/imgs/secao11/book6/6_pag1.png",
+      "/imgs/secao11/book6/6_pag2.png",
+      "/imgs/secao11/book6/6_pag3.png",
+      "/imgs/secao11/book6/6_costas.png"
+    ];
+
 
     const anthotypes = [
       "/imgs/secao4/Anthotype_1_F.png",
@@ -331,78 +522,145 @@
         zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
         fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
       }
-      // --- Book3 gallery ---
-      else if (src.includes("tecido_booklet_fechado.png")) {
+
+      // --- Book4 gallery ---
+      else if (src.includes("/imgs/secao9/book4/4_capa.png")) {
         let currentIndex = 0;
         const fullscreen = document.createElement('div');
         fullscreen.className = 'fullscreen';
-        fullscreen.style.backgroundImage = "url('/imgs/secao8/tecido-+-livro aberto.png')";
-        fullscreen.style.backgroundSize = "cover";
-        fullscreen.style.backgroundPosition = "center";
-
         const zimg = document.createElement('img');
-        zimg.src = book3Gallery[currentIndex];
-        zimg.style.position = "absolute";
-        zimg.style.top = "50%";
-        zimg.style.left = "50%";
-        zimg.style.transform = "translate(-50%, -50%)";
-        zimg.style.maxHeight = "80%";
-        zimg.style.cursor = "pointer";
-
+        zimg.src = book4Gallery[currentIndex];
         fullscreen.appendChild(zimg);
         document.body.appendChild(fullscreen);
 
         const nextImage = () => {
-          if (currentIndex < book3Gallery.length - 1) {
+          if (currentIndex < book4Gallery.length - 1) {
             currentIndex++;
-            zimg.src = book3Gallery[currentIndex];
+            zimg.src = book4Gallery[currentIndex];
           } else {
             fullscreen.remove();
-            loadStep(8);
+            loadStep(10); // ajusta para o próximo step após terminar o Book4
           }
         };
 
         zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
         fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
       }
-      // --- Anthotypes carousel ---
-      else if (anthotypes.includes(src)) {
-        const fullscreen = document.createElement('div');
-        fullscreen.className = 'fullscreen';
 
-        const container = document.createElement('div');
-        container.style.display = 'flex';
-        container.style.flexDirection = 'row';
-        container.style.gap = '6px';
-        container.style.alignItems = 'center';
-        container.style.justifyContent = 'flex-start';
-        container.style.overflowX = 'auto';
-        container.style.overflowY = 'hidden';
-        container.style.height = '90%';
-        container.style.padding = '10px';
-        container.style.scrollbarWidth = 'none';
-        container.style.msOverflowStyle = 'none';
 
-        anthotypes.forEach(imgSrc => {
-          const zimg = document.createElement('img');
+          // --- Book5 gallery ---
+    else if (src.includes("/imgs/secao10/book5/5_capa.png")) {
+      let currentIndex = 0;
+      const fullscreen = document.createElement('div');
+      fullscreen.className = 'fullscreen';
+      const zimg = document.createElement('img');
+      zimg.src = book5Gallery[currentIndex];
+      fullscreen.appendChild(zimg);
+      document.body.appendChild(fullscreen);
+
+      const nextImage = () => {
+        if (currentIndex < book5Gallery.length - 1) {
+          currentIndex++;
+          zimg.src = book5Gallery[currentIndex];
+        } else {
+          fullscreen.remove();
+          loadStep(11); // avança para o step 11 ao terminar
+        }
+      };
+
+      zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
+      fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+    }
+
+
+        // --- Book6 gallery ---
+    else if (src.includes("/imgs/secao11/book6/6_capa.png")) {
+      let currentIndex = 0;
+      const fullscreen = document.createElement('div');
+      fullscreen.className = 'fullscreen';
+      const zimg = document.createElement('img');
+      zimg.src = book6Gallery[currentIndex];
+      fullscreen.appendChild(zimg);
+      document.body.appendChild(fullscreen);
+
+      const nextImage = () => {
+        if (currentIndex < book6Gallery.length - 1) {
+          currentIndex++;
+          zimg.src = book6Gallery[currentIndex];
+        } else {
+          fullscreen.remove();
+          loadStep(1); // volta ao step 1 ao terminar o Book6
+        }
+      };
+
+      zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
+      fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+    }
+
+
+
+    // --- Book3 gallery para seção 8 ---
+    else if (src.includes("tecido_booklet_fechado.png")) {
+    let currentIndex = 0;
+    const fullscreen = document.createElement('div');
+    fullscreen.className = 'fullscreen-book3';
+
+    const zimg = document.createElement('img');
+    zimg.src = book3Gallery[currentIndex];
+    fullscreen.appendChild(zimg);
+    document.body.appendChild(fullscreen);
+
+  const nextImage = () => {
+    if (currentIndex < book3Gallery.length - 1) {
+      currentIndex++;
+      zimg.src = book3Gallery[currentIndex];
+    } else {
+      fullscreen.remove();
+      loadStep(9); // avança para a próxima secção quando terminar
+    }
+  };
+
+      zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
+      fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+    }
+    // --- Anthotypes carousel ---
+    else if (anthotypes.includes(src)) {
+      const fullscreen = document.createElement('div');
+      fullscreen.className = 'fullscreen';
+
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.flexDirection = 'row';
+      container.style.gap = '6px';
+      container.style.alignItems = 'center';
+      container.style.justifyContent = 'flex-start';
+      container.style.overflowX = 'auto';
+      container.style.overflowY = 'hidden';
+      container.style.height = '90%';
+      container.style.padding = '10px';
+      container.style.scrollbarWidth = 'none';
+      container.style.msOverflowStyle = 'none';
+
+      anthotypes.forEach(imgSrc => {
+        const zimg = document.createElement('img');
           zimg.src = imgSrc;
           zimg.style.height = '80%';
           zimg.style.cursor = 'pointer';
           zimg.style.transform = 'rotate(0deg)';
           zimg.addEventListener('click', e => e.stopPropagation());
           container.appendChild(zimg);
-        });
+      });
 
-        fullscreen.appendChild(container);
-        document.body.appendChild(fullscreen);
-        container.querySelector('img').scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+      fullscreen.appendChild(container);
+      document.body.appendChild(fullscreen);
+      container.querySelector('img').scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
 
-        fullscreen.addEventListener('click', e => {
-          if (e.target === fullscreen) {
-            fullscreen.remove();
-            loadStep(5);
-          }
-        });
+      fullscreen.addEventListener('click', e => {
+        if (e.target === fullscreen) {
+          fullscreen.remove();
+          loadStep(5);
+        }
+      });
       }
       // --- Cianos carousel ---
       else if (cianos.includes(src)) {
@@ -443,7 +701,7 @@
           }
         });
       }
-      // --- Normal zoom (incluindo Cianotipo_SINGLE) ---
+      // --- Normal zoom ---
       else {
         const fullscreen = document.createElement('div');
         fullscreen.className = 'fullscreen';
