@@ -38,3 +38,8 @@ img.addEventListener('click', (e) => {
         window.location.href = '/ninasgarden.html';
     }
 });
+
+
+///////////////////////////77
+// TESTE 9> INDEX
+
