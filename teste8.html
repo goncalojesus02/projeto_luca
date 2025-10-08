@@ -83,7 +83,6 @@
   .fullscreen-book3 img {
     max-width: 80%;
     max-height: 80%;
-    box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
     cursor: pointer;
     border-radius: 6px;
     animation: zoomIn 0.4s ease;
@@ -114,12 +113,12 @@
 
       { src: "/imgs/secao2/2.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 21, zindex: 2, rotate:-8 }, { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 30, zindex: 1, nextStep: 3 }] },
 
-      { src: "/imgs/secao3/3.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 16, zindex: 2, rotate:-8 }, { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 22, zindex: 1, nextStep: 3 }, { src: "/imgs/secao3/book1/1_capa.png", left: 30, top: 14, width: 20, zindex: 0, nextStep: 4 }] },
+      { src: "/imgs/secao3/3.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 16, zindex: 2, rotate:-8 }, { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 22, zindex: 1 }, { src: "/imgs/secao3/book1/1_capa.png", left: 30, top: 14, width: 20, zindex: 0, nextStep: 4 }] },
 
       { src: "/imgs/secao4/4.jpg", 
         objects: [ 
           { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 12, zindex: 2, rotate:-8 }, 
-          { src: "/imgs/secao2/objeto_2.png", left: 8, top: 12, width: 18, zindex: 1, nextStep: 3 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 8, top: 12, width: 18, zindex: 1 }, 
 
           { src: "/imgs/secao3/book1/1_capa.png", left: 26, top: 5, width: 20, zindex: 0 }, 
 
@@ -275,7 +274,7 @@
 
       { src: "/imgs/secao10/10.jpg", objects: [
          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 6, zindex: 2, rotate:-2 }, 
-          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 12, width: 8, zindex: 1, nextStep: 3 },
+          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 12, width: 8, zindex: 1 },
 
           { src: "/imgs/secao3/book1/1_capa.png", left: 12, top: 10, width: 8, zindex: 0 }, 
 
@@ -315,7 +314,7 @@
       { src: "/imgs/secao11/11.jpg", objects: [
 
           { src: "/imgs/secao1/objeto-1-frente.png", left: 1, top: 9, width: 5, zindex: 2, rotate:-2 }, 
-          { src: "/imgs/secao2/objeto_2.png", left: 4, top: 14, width: 6, zindex: 1, nextStep: 3 },
+          { src: "/imgs/secao2/objeto_2.png", left: 4, top: 14, width: 6, zindex: 1 },
 
           { src: "/imgs/secao3/book1/1_capa.png", left: 10, top: 14, width: 6, zindex: 0 }, 
 
@@ -336,18 +335,19 @@
           { src:"/imgs/secao6/Ciano_4_Frente.png", left: 35, top: 36, width: 3, zindex: 3 , rotate: 5},
           { src:"/imgs/secao6/Ciano_5_Frente.png", left: 35, top: 36, width: 3, zindex: 4, rotate: -3 },
           { src:"/imgs/secao6/Ciano_6_Frente.png", left: 35, top: 36, width: 3, zindex: 5, rotate: 3 },
-          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 35, top: 36, width: 3, zindex: 6, rotate: -6 },
-          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 35, top: 36, width: 3, zindex: 7, rotate: 6},
+          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 3, top: 36, width: 3, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 36, top: 36, width: 3, zindex: 7, rotate: 6},
 
           { src:"/imgs/secao7/Cianotipo_SINGLE_1.png", left: 40, top: 30, width: 4, zindex: 7},
           { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 45, top: 30, width: 4, zindex: 7},
 
-          { src: "/imgs/secao8/Tecido-+-livro_aberto.png", left: 49, top: -8, width: 19, zindex: 7},
+          { src: "/imgs/secao8/Tecido-+-livro_aberto.png", left: 49, top: -8, width: 20, zindex: 7},
 
           { src: "/imgs/secao8/book3/3_costas.png", left: 55, top: 10, width: 7, zindex: 8},
         
 
           { src: "/imgs/secao9/book4/4_capa.png", left: 64, top: 12, width: 12, zindex: 8},
+
           { src: "/imgs/secao10/book5/5_capa.png", left: 72, top: 12, width: 12, zindex: 8},
 
           { src: "/imgs/secao11/book6/6_capa.png", left: 80, top: 12, width: 12, zindex: 8},
@@ -433,6 +433,8 @@
       "/imgs/secao6/Ciano_8_Frente.png"
     ];
 
+
+
     function preload(src) { if(src){ new Image().src = src; } }
     function clearOverlay() { overlay.innerHTML = ''; }
 
@@ -497,6 +499,8 @@
       };
     }
 
+
+
     function openZoom(src, nextStep){
       // --- Book1 gallery ---
       if (src.includes("/imgs/secao3/book1/1_capa.png")) {
@@ -521,6 +525,8 @@
         zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
         fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
       }
+
+      
       // --- Book2 gallery ---
       else if (src.includes("/imgs/secao5/book2/2_capa.png")) {
         let currentIndex = 0;

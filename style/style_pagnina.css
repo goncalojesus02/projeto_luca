@@ -1,143 +1,207 @@
+ html,
 body {
-    margin:4px;
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;          /* scroll horizontal */
-    overflow-y: hidden;         /*sem scroll vertical */
-    scroll-snap-type: x mandatory;  /* "trava" no eixo X */
-    scroll-behavior: smooth;   /* rolagem suave */
-    position: relative;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
-section {
-    width: 100vw;
-    height: 100vh;
-    scroll-snap-align: start; /* alinha o início de cada section */
-    gap: 3px ;
-    flex-shrink: 0;
+#stage {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scroll-behavior: smooth;
 }
 
-.b1-envelope{
-  background-image: url("/imgs/Eenvelope_Aaberto.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover ;
-}
-
-.b2-contenv {
-   display: flex;
-   position: relative;          /* permite posicionamento relativo dos filhos */
-  width: 100vw;
+.image-wrap {
+  position: relative;
+  display: inline-block;
   height: 100vh;
-  justify-content: center;     /* centraliza horizontalmente */
-  align-items: center;         /* centraliza verticalmente */
-  background-image: url("/imgs/1_copiar.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
-.cartao1 {
-    position: relative;          /* você ainda pode usar top/left para ajustes */
-    top: -8%;
-    left: -10%;
-    max-width:28%;              /* tamanho proporcional da imagem */
-
-    filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+#stageImg {
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-
-.b3-contenvpan {
-    width: auto;                 /* ocupa toda a largura da viewport */
-    height: 100vh;                /* ocupa toda a altura da viewport */
-    scroll-snap-align: start;
-
-    background-image: url("/imgs/2_copiar.jpg");
-    background-repeat: no-repeat;
-    background-position: left; /* ou center center, se preferir */
-    background-size: auto 100%;       /* altura da viewport, mantém proporção */
-
-
-    display: flex;
-    flex-direction: row;
-    ;
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
+/* ----------------------------- */
+/* OBJETOS INTERATIVOS (HOTSPOTS) */
+/* ----------------------------- */
+.hotspot-object {
+  position: absolute;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 2;
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.65));
+  height: auto;
+}
+
+.hotspot-flip-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transform-style: initial;
+}
+
+.hotspot-object:hover .hotspot-flip-container {
+  transform: none;
+}
+
+.hotspot-object-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: block;
+}
+
+.hotspot-object-front {
+  z-index: 2;
+  height: auto;
+  width: 100%;
+}
+
+.hotspot-object-back {
+  display: none;
+  height: auto;
+  width: 100%;
+}
+
+/* ----------------------------- */
+/* FULLSCREEN PADRÃO             */
+/* ----------------------------- */
 .fullscreen {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(255, 255, 255, 0.952);
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
 }
 
 .fullscreen img {
+  max-width: 85vw;
+  max-height: 85vh;
+  object-fit: contain;
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+  cursor: pointer;
+  transition: none !important; /* Sem zoom ou hover */
+}
+
+.fullscreen img:hover {
+  transform: none !important; /* Desativa efeitos ao passar o rato */
+}
+
+/* ----------------------------- */
+/* EFEITO FLIP (FULLSCREEN)      */
+/* ----------------------------- */
+.fullscreen-flip-host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   max-width: 90vw;
   max-height: 90vh;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.fullscreen-flip-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.fullscreen-face {
+  position: absolute;
+  max-width: 85vw;
+  max-height: 85vh;
+  object-fit: contain;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+  cursor: pointer;
+  transition: none !important;
+}
+
+.fullscreen-back {
+  transform: rotateY(180deg);
+}
+
+/* ----------------------------- */
+/* FULLSCREEN BOOK3 (FUNDO ESPECIAL) */
+/* ----------------------------- */
+.fullscreen-book3 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/imgs/secao8/Tecido-+-livro_aberto.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.fullscreen-book3 img {
+  max-width: 80%;
+  max-height: 80%;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  border-radius: 6px;
   animation: zoomIn 0.4s ease;
 }
 
 @keyframes zoomIn {
-  from { transform: scale(0.5); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.objeto1 {
-  position: relative;
-  top: -26%;      /* espaçamento do topo */
-  left: 6%;     /* espaçamento da esquerda */
-  max-width: 28%; /* reduz proporcionalmente */
-  height: auto;   /* mantém proporção */
-  z-index: 2;
-  opacity: 98%;
-  transform: rotate(-5deg);
-  transform-origin: top left;
-  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+/* Remove barras de rolagem internas */
+.fullscreen div::-webkit-scrollbar {
+  display: none;
 }
 
-.objeto2 {
-  position: relative;
-  top: 12%;       /* ajusta verticalmente para mais ou menos centro */
-  left: 18%;      /* centraliza horizontalmente */
-  transform: translateX(-50%); /* garante centralização exata */
-  max-width: 40%; /* proporcionalmente menor */
-  height: 100vh;
-  z-index: 1;     /* fica atrás do objeto1 na sobreposição */
-  opacity: 98%;
-  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+.fullscreen > div {
+  max-height: 85vh;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-.b3a-contenvpan  .b3b-contenvpan{
-  position: relative;   /* necessário para posicionar imagens dentro */
-  width: 100%;
-  height: 100vh;
+.fullscreen > div img {
+  max-height: 70vh;
+  width: auto;
 }
-
-.b3b-contenvpan {
-    background-image: url("/imgs/3_copiar.jpg");
-    background-repeat: no-repeat;
-    background-position: left; /* ou center center, se preferir */
-    background-size: auto 100%;       /* altura da viewport, mantém proporção */
-}
-
-.objeto3 {
-  position: relative;
-  top: -42%;       
-  left: 20%;
-  transform: translateX(-50%); /* garante centralização exata */
-  max-width: 40%; /* proporcionalmente menor */
-  height: auto;
-  z-index: 1;     /* fica atrás do objeto1 na sobreposição */
-  opacity: 98%;
-  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
-
-}
-
-
