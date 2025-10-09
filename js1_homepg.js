@@ -1,51 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Página Interativa</title>
-<style>
-  body {
-    margin: 0;
-    background-color: white;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
-    font-family: Arial, sans-serif;
-  }
-
-  /* Parágrafo no canto superior direito */
-  #top-right {
-    position: absolute;
-    top: 1em;
-    right: 1em;
-    cursor: pointer;
-  }
-
-  /* Imagem central e arrastável */
-  #draggable {
-    height: 30%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: grab;
-    user-select: none;
-  }
-
-  #draggable.dragging {
-    cursor: grabbing;
-  }
-</style>
-</head>
-<body>
-
-<p id="top-right">Gardener</p>
-
-<img id="draggable" src="/imgs/envelope_frete.png" alt="Objeto" />
-
-<script>
-  // Parágrafo clicável
+ // Parágrafo clicável
   const topRight = document.getElementById('top-right');
 
   topRight.addEventListener('click', () => {
@@ -98,10 +51,6 @@
   // Clique na imagem para redirecionar apenas se não houve movimento
   draggable.addEventListener('click', () => {
     if (!dragMoved) {
-      window.location.href = '/camin1.html';
+      window.location.href = '/projectninasgarden.html';
     }
   });
-</script>
-
-</body>
-</html>
