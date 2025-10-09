@@ -1,102 +1,222 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
   <meta charset="utf-8">
-  <title>luca project</title>
+  <title>nina's garden - act 1</title>
   <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-      overflow: hidden;
-    }
-    #stage {
-      overflow-x: auto;
-      overflow-y: hidden;
-      white-space: nowrap;
-      scroll-behavior: smooth;
-    }
-    .image-wrap {
-      position: relative;
-      display: inline-block;
-      height: 100vh;
-    }
-    #stageImg {
-      display: block;
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-    .hotspot-object {
-      position: absolute;
-      cursor: pointer;
-      pointer-events: auto;
-      z-index: 2;
-      filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.65));
-      height: auto;
-    }
-    .fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #ffffff; /* fundo branco sólido */
-    display: flex;
-    box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
+   html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+#stage {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+
+.image-wrap {
+  position: relative;
+  display: inline-block;
+  height: 100vh;
+}
+
+#stageImg {
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ----------------------------- */
+/* OBJETOS INTERATIVOS (HOTSPOTS) */
+/* ----------------------------- */
+.hotspot-object {
+  position: absolute;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 2;
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.65));
+  height: auto;
+}
+
+.hotspot-flip-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transform-style: initial;
+}
+
+.hotspot-object:hover .hotspot-flip-container {
+  transform: none;
+}
+
+.hotspot-object-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: block;
+}
+
+.hotspot-object-front {
+  z-index: 2;
+  height: auto;
+  width: 100%;
+}
+
+.hotspot-object-back {
+  display: none;
+  height: auto;
+  width: 100%;
+}
+
+/* ----------------------------- */
+/* FULLSCREEN PADRÃO             */
+/* ----------------------------- */
+.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+.fullscreen img {
+  max-width: 85vw;
+  max-height: 85vh;
+  object-fit: contain;
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+  cursor: pointer;
+  transition: none !important; /* Sem zoom ou hover */
+}
+
+.fullscreen img:hover {
+  transform: none !important; /* Desativa efeitos ao passar o rato */
+}
+
+/* ----------------------------- */
+/* EFEITO FLIP (FULLSCREEN)      */
+/* ----------------------------- */
+.fullscreen-flip-host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.fullscreen-flip-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.fullscreen-face {
+  position: absolute;
+  max-width: 85vw;
+  max-height: 85vh;
+  object-fit: contain;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+  cursor: pointer;
+  transition: none !important;
+}
+
+.fullscreen-back {
+  transform: rotateY(180deg);
+}
+
+/* ----------------------------- */
+/* FULLSCREEN BOOK3 (FUNDO ESPECIAL) */
+/* ----------------------------- */
+.fullscreen-book3 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/imgs/secao8/Tecido-+-livro_aberto.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.fullscreen-book3 img {
+  max-width: 80%;
+  max-height: 80%;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  border-radius: 6px;
+  animation: zoomIn 0.4s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
   }
 
-    .fullscreen img {
-    max-width: 90vw;
-    max-height: 90vh;
-    filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.4));
-    animation: zoomIn 0.4s ease;
-    cursor: pointer;
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
+}
 
-     /* Novo fullscreen só para o Book3 (secção 8) */
-  .fullscreen-book3 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('/imgs/secao8/Tecido-+-livro_aberto.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-  }
+/* Remove barras de rolagem internas */
+.fullscreen div::-webkit-scrollbar {
+  display: none;
+}
 
-  .fullscreen-book3 img {
-    max-width: 80%;
-    max-height: 80%;
-    cursor: pointer;
-    border-radius: 6px;
-    animation: zoomIn 0.4s ease;
-  }
-    @keyframes zoomIn {
-      from {transform: scale(0.5); opacity: 0;}
-      to {transform: scale(1); opacity: 1;}
-    }
-    /* esconder scroll do carrossel horizontal */
-    .fullscreen div::-webkit-scrollbar {
-      display: none;
-    }
+.fullscreen > div {
+  max-height: 85vh;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.fullscreen > div img {
+  max-height: 70vh;
+  width: auto;
+}
+
+
   </style>
 </head>
+
 <body>
   <div id="stage">
     <div class="image-wrap">
@@ -109,41 +229,58 @@
     const steps = [
       { src: "/imgs/envelope_aberto.png", objects: [], next: 1 },
 
-      { src: "/imgs/secao1/1.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left: 28, top: 20, width: 28, nextStep: 2 }] },
-
-      { src: "/imgs/secao2/2.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 21, zindex: 2, rotate:-8 }, { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 30, zindex: 1, nextStep: 3 }] },
-
-      { src: "/imgs/secao3/3.jpg", objects: [{ src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 16, zindex: 2, rotate:-8 }, { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 22, zindex: 1 }, { src: "/imgs/secao3/book1/1_capa.png", left: 30, top: 14, width: 20, zindex: 0, nextStep: 4 }] },
-
-      { src: "/imgs/secao4/4.jpg", 
-        objects: [ 
-          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 12, zindex: 2, rotate:-8 }, 
-          { src: "/imgs/secao2/objeto_2.png", left: 8, top: 12, width: 18, zindex: 1 }, 
-
-          { src: "/imgs/secao3/book1/1_capa.png", left: 26, top: 5, width: 20, zindex: 0 }, 
-
-          { src:"/imgs/secao4/Anthotype_1_F.png", left: 50, top: 28, width: 8, zindex: 8 }, 
-          { src:"/imgs/secao4/Anthotype_2_F.png", left: 50, top: 28, width: 8, zindex:7, rotate: 3 }, 
-          { src:"/imgs/secao4/Anthotype_3_F.png", left: 50, top: 28, width: 8, zindex:7, rotate: -3 }, 
-          { src:"/imgs/secao4/Anthotype_4_F.png", left: 50, top: 28, width: 8, zindex:7, rotate: 4 }, 
-          { src:"/imgs/secao4/Anthotype_5_F.png", left: 50, top: 28, width: 8, zindex:7, rotate: -4 }, 
-          { src:"/imgs/secao4/Anthotype_6_F.png", left: 50, top: 28, width: 8, zindex:7, rotate: -5 }, 
-          { src:"/imgs/secao4/Anthotype_7_F.png", left: 50, top: 28, width: 8, zindex:7, rotate: 5 }, 
-          { src:"/imgs/secao4/Anthotype_8_F.png", left: 50, top: 28, width: 8, zindex:7, rotate: -2 }   
-        ] 
+      {
+        src: "/imgs/secao1/1.jpg", objects: [
+          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 28, top: 20, width: 28, nextStep: 2 }
+        ]
       },
 
-      { src: "/imgs/secao5/5.jpg", objects: [
-          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 10, zindex: 2, rotate:-8 }, 
+      {
+        src: "/imgs/secao2/2.jpg",
+        objects: [
+          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 2, top: 9, width: 21, zIndex: 1, rotate: -8 },
+          { src: "/imgs/secao2/objeto_2.png", left: 12, top: 18, width: 22, zIndex: 0, nextStep: 3 }
+        ]
+      },
+
+      {
+        src: "/imgs/secao3/3.jpg",
+        objects: [
+          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 2, top: 9, width: 21, zIndex: 1, rotate: -8 },
+
+          { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 22, zindex: 1, nextStep: 3 }, { src: "/imgs/secao3/book1/1_capa.png", left: 30, top: 14, width: 20, zindex: 0, nextStep: 4 }]
+      },
+
+      {
+        src: "/imgs/secao4/4.jpg",
+        objects: [
+          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 2, top: 9, width: 21, zIndex: 1, rotate: -8 },
+          { src: "/imgs/secao2/objeto_2.png", left: 8, top: 12, width: 18, zindex: 0 },
+
+          { src: "/imgs/secao3/book1/1_capa.png", left: 26, top: 5, width: 20, zindex: 0 },
+
+          { src: "/imgs/secao4/Anthotype_1_F.png", left: 50, top: 28, width: 8, zindex: 8 },
+          { src: "/imgs/secao4/Anthotype_2_F.png", backSrc: "/imgs/secao4/Anthotype_2_C.png", left: 50, top: 28, width: 8, zindex: 7, rotate: 3 },
+          { src: "/imgs/secao4/Anthotype_3_F.png",  backSrc: "/imgs/secao4/Anthotype_3_C.png", left: 50, top: 28, width: 8, zindex: 7, rotate: -3 },
+          { src: "/imgs/secao4/Anthotype_4_F.png",  backSrc: "/imgs/secao4/Anthotype_4_C.png", left: 50, top: 28, width: 8, zindex: 7, rotate: 4 },
+          { src: "/imgs/secao4/Anthotype_5_F.png",  backSrc: "/imgs/secao4/Anthotype_5_C.png", left: 50, top: 28, width: 8, zindex: 7, rotate: -4 },
+          { src: "/imgs/secao4/Anthotype_6_F.png", left: 50, top: 28, width: 8, zindex: 7, rotate: -5 },
+          { src: "/imgs/secao4/Anthotype_7_F.png", left: 50, top: 28, width: 8, zindex: 7, rotate: 5 },
+          { src: "/imgs/secao4/Anthotype_8_F.png", left: 50, top: 28, width: 8, zindex: 7, rotate: -2 }
+        ]
+      },
+
+       { src: "/imgs/secao5/5.jpg", objects: [
+          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png",  left: 2, top: 9, width: 10, zindex: 2, rotate:-8 }, 
           { src: "/imgs/secao2/objeto_2.png", left: 8, top: 12, width: 12, zindex: 1}, 
           { src: "/imgs/secao3/book1/1_capa.png", left: 20, top: 5, width: 16, zindex: 0 }, 
 
-          { src:"/imgs/secao4/Anthotype_1_F.png", left: 40, top: 28, width: 6, zindex: 8 }, 
+          { src:"/imgs/secao4/Anthotype_1_F.png",  left: 40, top: 28, width: 6, zindex: 8 }, 
 
-          { src:"/imgs/secao4/Anthotype_2_F.png", left: 40, top: 28, width: 6, zindex:7, rotate: 3 }, 
-          { src:"/imgs/secao4/Anthotype_3_F.png", left: 40, top: 28, width: 6, zindex:7, rotate: -3 }, 
-          { src:"/imgs/secao4/Anthotype_4_F.png", left: 40, top: 28, width: 6, zindex:7, rotate: 4 }, 
-          { src:"/imgs/secao4/Anthotype_5_F.png", left: 40, top: 28, width: 6, zindex:7, rotate: -4 }, 
+          { src:"/imgs/secao4/Anthotype_2_F.png",  backSrc: "/imgs/secao4/Anthotype_2_C.png", left: 40, top: 28, width: 6, zindex:7, rotate: 3 }, 
+          { src:"/imgs/secao4/Anthotype_3_F.png",  backSrc: "/imgs/secao4/Anthotype_3_C.png", left: 40, top: 28, width: 6, zindex:7, rotate: -3 }, 
+          { src:"/imgs/secao4/Anthotype_4_F.png",  backSrc: "/imgs/secao4/Anthotype_4_C.png", left: 40, top: 28, width: 6, zindex:7, rotate: 4 }, 
+          { src:"/imgs/secao4/Anthotype_5_F.png",  backSrc: "/imgs/secao4/Anthotype_5_C.png", left: 40, top: 28, width: 6, zindex:7, rotate: -4 }, 
           { src:"/imgs/secao4/Anthotype_6_F.png", left: 40, top: 28, width: 6, zindex:7, rotate: -5 }, 
           { src:"/imgs/secao4/Anthotype_7_F.png", left: 40, top: 28, width: 6, zindex:7, rotate: 5 }, 
           { src:"/imgs/secao4/Anthotype_8_F.png", left: 40, top: 28, width: 6, zindex:7, rotate: -2 },
@@ -166,15 +303,15 @@
 
           { src: "/imgs/secao5/book2/2_capa.png", left: 48, top: 5, width: 13, zindex: 0 },
           { src:"/imgs/secao6/Ciano_1_Frente.png", left: 66, top: 28, width: 6, zindex: 8 },
-          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 66, top: 28, width: 6, zindex: 1, rotate:4 }, 
-          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 66, top: 28, width: 6, zindex: 2, rotate:-4 },
+          { src:"/imgs/secao6/Ciano_2_Frente.png", backSrc: "/imgs/secao6/Ciano_2_Costas.png", left: 66, top: 28, width: 6, zindex: 1, rotate:4 }, 
+          { src:"/imgs/secao6/Ciano_3_Frente.png", backSrc: "/imgs/secao6/Ciano_3_Costas.png", left: 66, top: 28, width: 6, zindex: 2, rotate:-4 },
           { src:"/imgs/secao6/Ciano_4_Frente.png", left: 66, top: 28, width: 6, zindex: 3 , rotate: 5},
-          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 66, top: 28, width: 6, zindex: 4, rotate: -3 },
+          { src:"/imgs/secao6/Ciano_5_Frente.png", backSrc: "/imgs/secao6/Ciano_5_Costas.png", left: 66, top: 28, width: 6, zindex: 4, rotate: -3 },
           { src:"/imgs/secao6/Ciano_6_Frente.png", left: 66, top: 28, width: 6, zindex: 5, rotate: 3 },
-          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 66, top: 28, width: 6, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_7_Frente.png", backSrc: "/imgs/secao6/Ciano_7_Costas.png", left: 66, top: 28, width: 6, zindex: 6, rotate: -6 },
           { src:"/imgs/secao6/Ciano_8_Frente.png", left: 66, top: 28, width: 6, zindex: 7, rotate: 6}
       ] },
-      
+
       { src: "/imgs/secao7/7.jpg", objects: [
          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 8, zindex: 2 }, 
           { src: "/imgs/secao2/objeto_2.png", left: 6, top: 12, width: 10, zindex: 1 }, 
@@ -203,7 +340,7 @@
           { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 71, top: 28, width: 6, zindex: 7},
       ] },
 
-      { src: "/imgs/secao8/8.jpg", objects: [
+       { src: "/imgs/secao8/8.jpg", objects: [
           { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 6, zindex: 2 , rotate:-8}, 
 
           { src: "/imgs/secao2/objeto_2.png", left: 4, top: 12, width: 10, zindex: 1 }, 
@@ -272,7 +409,7 @@
 
       ] },
 
-      { src: "/imgs/secao10/10.jpg", objects: [
+       { src: "/imgs/secao10/10.jpg", objects: [
          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 6, zindex: 2, rotate:-2 }, 
           { src: "/imgs/secao2/objeto_2.png", left: 5, top: 12, width: 8, zindex: 1 },
 
@@ -352,23 +489,47 @@
 
           { src: "/imgs/secao11/book6/6_capa.png", left: 80, top: 12, width: 12, zindex: 8},
 
-      ] }
+      ]}
+
     ];
 
-    const img = document.getElementById('stageImg');
-    const overlay = document.getElementById('overlay');
-    const wrap = document.querySelector('.image-wrap');
-    let currentStep = 0;
+   const img = document.getElementById('stageImg');
+const overlay = document.getElementById('overlay');
+const wrap = document.querySelector('.image-wrap');
+let currentStep = 0;
 
-    const book1Gallery = [
-      "/imgs/secao3/book1/1_capa.png",
-      "/imgs/secao3/book1/1_pag1.png",
-      "/imgs/secao3/book1/1_pag2.png",
-      "/imgs/secao3/book1/1_pag3.png",
-      "/imgs/secao3/book1/1_costas.png"
-    ];
+const cianos = [
+  "/imgs/secao6/Ciano_1_Frente.png",
+  "/imgs/secao6/Ciano_2_Frente.png",
+  "/imgs/secao6/Ciano_3_Frente.png",
+  "/imgs/secao6/Ciano_4_Frente.png",
+  "/imgs/secao6/Ciano_5_Frente.png",
+  "/imgs/secao6/Ciano_6_Frente.png",
+  "/imgs/secao6/Ciano_7_Frente.png",
+  "/imgs/secao6/Ciano_8_Frente.png"
+];
 
-    const book2Gallery = [
+const anthotypes = [
+  "/imgs/secao4/Anthotype_1_F.png",
+  "/imgs/secao4/Anthotype_2_F.png",
+  "/imgs/secao4/Anthotype_3_F.png",
+  "/imgs/secao4/Anthotype_4_F.png",
+  "/imgs/secao4/Anthotype_5_F.png",
+  "/imgs/secao4/Anthotype_6_F.png",
+  "/imgs/secao4/Anthotype_7_F.png",
+  "/imgs/secao4/Anthotype_8_F.png"
+];
+
+
+const book1Gallery = [
+  "/imgs/secao3/book1/1_capa.png",
+  "/imgs/secao3/book1/1_pag1.png",
+  "/imgs/secao3/book1/1_pag2.png",
+  "/imgs/secao3/book1/1_pag3.png",
+  "/imgs/secao3/book1/1_costas.png"
+];
+
+ const book2Gallery = [
       "/imgs/secao5/book2/2_capa.png",
       "/imgs/secao5/book2/2_pag1.png",
       "/imgs/secao5/book2/2_pag2.png",
@@ -410,124 +571,38 @@
       "/imgs/secao11/book6/6_costas.png"
     ];
 
+function preload(src) { if (src) { new Image().src = src; } }
+function clearOverlay() { overlay.innerHTML = ''; }
 
-    const anthotypes = [
-      "/imgs/secao4/Anthotype_1_F.png",
-      "/imgs/secao4/Anthotype_2_F.png",
-      "/imgs/secao4/Anthotype_3_F.png",
-      "/imgs/secao4/Anthotype_4_F.png",
-      "/imgs/secao4/Anthotype_5_F.png",
-      "/imgs/secao4/Anthotype_6_F.png",
-      "/imgs/secao4/Anthotype_7_F.png",
-      "/imgs/secao4/Anthotype_8_F.png"
-    ];
+// --- Zoom e galeria ---
+function openZoom(src, nextStep) {
+  // --- Book1 gallery ---
+  if (book1Gallery.includes(src)) {
+    let currentIndex = book1Gallery.indexOf(src);
+    const fullscreen = document.createElement('div');
+    fullscreen.className = 'fullscreen';
+    const zimg = document.createElement('img');
+    zimg.src = book1Gallery[currentIndex];
+    fullscreen.appendChild(zimg);
+    document.body.appendChild(fullscreen);
 
-    const cianos = [
-      "/imgs/secao6/Ciano_1_Frente.png",
-      "/imgs/secao6/Ciano_2_Frente.png",
-      "/imgs/secao6/Ciano_3_Frente.png",
-      "/imgs/secao6/Ciano_4_Frente.png",
-      "/imgs/secao6/Ciano_5_Frente.png",
-      "/imgs/secao6/Ciano_6_Frente.png",
-      "/imgs/secao6/Ciano_7_Frente.png",
-      "/imgs/secao6/Ciano_8_Frente.png"
-    ];
-
-
-
-    function preload(src) { if(src){ new Image().src = src; } }
-    function clearOverlay() { overlay.innerHTML = ''; }
-
-    function createObjects(objects){
-      clearOverlay();
-      objects.forEach(o=>{
-        const obj = document.createElement('img');
-        obj.src = o.src;
-        obj.className = 'hotspot-object';
-        obj.style.left = o.left + '%';
-        obj.style.top = o.top + '%';
-        if(o.width!==undefined) obj.style.width = o.width + '%';
-        obj.style.height = o.height ? o.height + '%' : 'auto';
-        obj.style.zIndex = o.zindex !== undefined ? o.zindex : 2;
-
-        if(o.rotate !== undefined){
-          obj.style.transform = `rotate(${o.rotate}deg)`;
-        }
-
-        obj.addEventListener('click', e=>{
-          e.stopPropagation();
-          openZoom(o.src, o.nextStep);
-        });
-        overlay.appendChild(obj);
-      });
-    }
-
-    function loadStep(i){
-      if(i < 0 || i >= steps.length) return;
-      currentStep = i;
-      const step = steps[i];
-      clearOverlay();
-      img.src = step.src;
-      preload(steps[i+1]?.src);
-
-      img.onload = () => {
-        if(i === 0){ 
-          wrap.style.width = "100vw";
-          wrap.style.height = "100vh";
-          img.style.width = "100vw";
-          img.style.height = "100vh";
-          img.style.objectFit = "contain";
-        } else if(i === 1){
-          wrap.style.width = "100vw";
-          wrap.style.height = "100vh";
-          img.style.width = "100vw";
-          img.style.height = "100vh";
-          img.style.objectFit = "cover";
-        } else {
-          wrap.style.height = "100vh";
-          wrap.style.width = img.naturalWidth * (wrap.clientHeight / img.naturalHeight) + 'px';
-          img.style.height = "100vh";
-          img.style.width = "auto";
-          img.style.objectFit = "initial";
-        }
-
-        createObjects(step.objects || []);
-        img.onclick = (i === 0) ? () => loadStep(step.next) : null;
-
-        const stage = document.getElementById('stage');
-        stage.scrollLeft = wrap.scrollWidth - stage.clientWidth;
-      };
-    }
-
-
-
-    function openZoom(src, nextStep){
-      // --- Book1 gallery ---
-      if (src.includes("/imgs/secao3/book1/1_capa.png")) {
-        let currentIndex = 0;
-        const fullscreen = document.createElement('div');
-        fullscreen.className = 'fullscreen';
-        const zimg = document.createElement('img');
+    const nextImage = () => {
+      if (currentIndex < book1Gallery.length - 1) {
+        currentIndex++;
         zimg.src = book1Gallery[currentIndex];
-        fullscreen.appendChild(zimg);
-        document.body.appendChild(fullscreen);
-
-        const nextImage = () => {
-          if (currentIndex < book1Gallery.length - 1) {
-            currentIndex++;
-            zimg.src = book1Gallery[currentIndex];
-          } else {
-            fullscreen.remove();
-            loadStep(4);
-          }
-        };
-
-        zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
-        fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+      } else {
+        fullscreen.remove(); 
+        if (nextStep !== undefined) loadStep(nextStep);
       }
+    };
 
-      
-      // --- Book2 gallery ---
+    zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
+    fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+
+    return; // evita que o normal zoom seja executado
+  }
+
+  // --- Book2 gallery ---
       else if (src.includes("/imgs/secao5/book2/2_capa.png")) {
         let currentIndex = 0;
         const fullscreen = document.createElement('div');
@@ -549,9 +624,38 @@
 
         zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
         fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+
+         return; // evita que o normal zoom seja executado
       }
 
-      // --- Book4 gallery ---
+
+// --- Book3 gallery para seção 8 ---
+    else if (src.includes("tecido_booklet_fechado.png")) {
+    let currentIndex = 0;
+    const fullscreen = document.createElement('div');
+    fullscreen.className = 'fullscreen-book3';
+
+    const zimg = document.createElement('img');
+    zimg.src = book3Gallery[currentIndex];
+    fullscreen.appendChild(zimg);
+    document.body.appendChild(fullscreen);
+
+  const nextImage = () => {
+    if (currentIndex < book3Gallery.length - 1) {
+      currentIndex++;
+      zimg.src = book3Gallery[currentIndex];
+    } else {
+      fullscreen.remove();
+      loadStep(9); // avança para a próxima secção quando terminar
+    }
+  };
+
+      zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
+      fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+    }
+
+
+    // --- Book4 gallery ---
       else if (src.includes("/imgs/secao9/book4/4_capa.png")) {
         let currentIndex = 0;
         const fullscreen = document.createElement('div');
@@ -576,7 +680,8 @@
       }
 
 
-          // --- Book5 gallery ---
+
+        // --- Book5 gallery ---
     else if (src.includes("/imgs/secao10/book5/5_capa.png")) {
       let currentIndex = 0;
       const fullscreen = document.createElement('div');
@@ -617,7 +722,7 @@
           zimg.src = book6Gallery[currentIndex];
         } else {
           fullscreen.remove();
-          loadStep(1); // volta ao step 1 ao terminar o Book6
+          loadStep(11); // volta ao step 1 ao terminar o Book6
         }
       };
 
@@ -626,136 +731,375 @@
     }
 
 
+//////////////////////////////////////////////////////////////
 
-    // --- Book3 gallery para seção 8 ---
-    else if (src.includes("tecido_booklet_fechado.png")) {
-    let currentIndex = 0;
-    const fullscreen = document.createElement('div');
-    fullscreen.className = 'fullscreen-book3';
+// --- Anthotypes carousel com efeito flip ---
+if (anthotypes.includes(src)) {
+  const fullscreen = document.createElement('div');
+  fullscreen.className = 'fullscreen';
 
-    const zimg = document.createElement('img');
-    zimg.src = book3Gallery[currentIndex];
-    fullscreen.appendChild(zimg);
-    document.body.appendChild(fullscreen);
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.flexDirection = 'row';
+  container.style.gap = '12px';
+  container.style.alignItems = 'center';
+  container.style.justifyContent = 'flex-start';
+  container.style.overflowX = 'auto';
+  container.style.overflowY = 'hidden';
+  container.style.height = '90%';
+  container.style.padding = '10px';
+  container.style.scrollbarWidth = 'none';
+  container.style.msOverflowStyle = 'none';
+  container.style.flexWrap = 'nowrap';
+  container.style.scrollSnapType = 'x mandatory';
 
-  const nextImage = () => {
-    if (currentIndex < book3Gallery.length - 1) {
-      currentIndex++;
-      zimg.src = book3Gallery[currentIndex];
-    } else {
-      fullscreen.remove();
-      loadStep(9); // avança para a próxima secção quando terminar
-    }
-  };
+  anthotypes.forEach(imgSrc => {
+    const flipWrapper = document.createElement('div');
+    flipWrapper.style.position = 'relative';
+    flipWrapper.style.flex = '0 0 auto';
+    flipWrapper.style.width = '200px'; // largura fixa para o flip
+    flipWrapper.style.height = '100%';
+    flipWrapper.style.cursor = 'pointer';
+    flipWrapper.style.perspective = '1200px';
+    flipWrapper.style.scrollSnapAlign = 'center';
 
-      zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
-      fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
-    }
-    // --- Anthotypes carousel ---
-    else if (anthotypes.includes(src)) {
-      const fullscreen = document.createElement('div');
-      fullscreen.className = 'fullscreen';
+    const innerWrapper = document.createElement('div');
+    innerWrapper.style.position = 'relative';
+    innerWrapper.style.width = '100%';
+    innerWrapper.style.height = '100%';
+    innerWrapper.style.transformStyle = 'preserve-3d';
+    innerWrapper.style.transition = 'transform 0.8s';
 
-      const container = document.createElement('div');
-      container.style.display = 'flex';
-      container.style.flexDirection = 'row';
-      container.style.gap = '6px';
-      container.style.alignItems = 'center';
-      container.style.justifyContent = 'flex-start';
-      container.style.overflowX = 'auto';
-      container.style.overflowY = 'hidden';
-      container.style.height = '90%';
-      container.style.padding = '10px';
-      container.style.scrollbarWidth = 'none';
-      container.style.msOverflowStyle = 'none';
+    // Frente
+    const frontFace = document.createElement('img');
+    frontFace.src = imgSrc;
+    frontFace.style.width = '100%';
+    frontFace.style.height = '100%';
+    frontFace.style.backfaceVisibility = 'hidden';
+    frontFace.style.position = 'absolute';
+    frontFace.style.top = 0;
+    frontFace.style.left = 0;
+    innerWrapper.appendChild(frontFace);
 
-      anthotypes.forEach(imgSrc => {
-        const zimg = document.createElement('img');
-          zimg.src = imgSrc;
-          zimg.style.height = '80%';
-          zimg.style.cursor = 'pointer';
-          zimg.style.transform = 'rotate(0deg)';
-          zimg.addEventListener('click', e => e.stopPropagation());
-          container.appendChild(zimg);
-      });
+    // Tentar carregar a imagem de trás
+    const backSrc = imgSrc.replace('_F', '_C');
+    const backFace = document.createElement('img');
+    backFace.style.width = '100%';
+    backFace.style.height = '100%';
+    backFace.style.backfaceVisibility = 'hidden';
+    backFace.style.transform = 'rotateY(180deg)';
+    backFace.style.position = 'absolute';
+    backFace.style.top = 0;
+    backFace.style.left = 0;
 
-      fullscreen.appendChild(container);
-      document.body.appendChild(fullscreen);
-      container.querySelector('img').scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+    // Preload para verificar se existe
+    const testImg = new Image();
+    testImg.onload = () => {
+      backFace.src = backSrc;
+      innerWrapper.appendChild(backFace);
+    };
+    testImg.onerror = () => {
+      // Se não existir, não adiciona backFace
+      // Sem borda, sem espaço
+    };
+    testImg.src = backSrc;
 
-      fullscreen.addEventListener('click', e => {
-        if (e.target === fullscreen) {
-          fullscreen.remove();
-          loadStep(5);
-        }
-      });
-      }
-      // --- Cianos carousel ---
-      else if (cianos.includes(src)) {
-        const fullscreen = document.createElement('div');
-        fullscreen.className = 'fullscreen';
+    flipWrapper.appendChild(innerWrapper);
+    container.appendChild(flipWrapper);
 
-        const container = document.createElement('div');
-        container.style.display = 'flex';
-        container.style.flexDirection = 'row';
-        container.style.gap = '6px';
-        container.style.alignItems = 'center';
-        container.style.justifyContent = 'flex-start';
-        container.style.overflowX = 'auto';
-        container.style.overflowY = 'hidden';
-        container.style.height = '90%';
-        container.style.padding = '10px';
-        container.style.scrollbarWidth = 'none';
-        container.style.msOverflowStyle = 'none';
-
-        cianos.forEach(imgSrc => {
-          const zimg = document.createElement('img');
-          zimg.src = imgSrc;
-          zimg.style.height = '80%';
-          zimg.style.cursor = 'pointer';
-          zimg.style.transform = 'rotate(0deg)';
-          zimg.addEventListener('click', e => e.stopPropagation());
-          container.appendChild(zimg);
-        });
-
-        fullscreen.appendChild(container);
-        document.body.appendChild(fullscreen);
-        container.querySelector('img').scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
-
-        fullscreen.addEventListener('click', e => {
-          if (e.target === fullscreen) {
-            fullscreen.remove();
-            loadStep(7);
-          }
-        });
-      }
-      // --- Normal zoom ---
-      else {
-        const fullscreen = document.createElement('div');
-        fullscreen.className = 'fullscreen';
-        const zimg = document.createElement('img');
-        zimg.src = src;
-        fullscreen.appendChild(zimg);
-        fullscreen.addEventListener('click', e => {
-          if (e.target === fullscreen) {
-            fullscreen.remove();
-            if(src.includes("Cianotipo_SINGLE_2.png")) loadStep(8);
-            else if(nextStep !== undefined) loadStep(nextStep);
-          }
-        });
-        document.body.appendChild(fullscreen);
-      }
-    }
-
-    document.addEventListener('keydown', e=>{
-      if(e.key === 'ArrowRight') loadStep(currentStep + 1);
-      if(e.key === 'ArrowLeft') loadStep(currentStep - 1);
+    flipWrapper.addEventListener('click', e => {
+      e.stopPropagation();
+      innerWrapper.style.transform = innerWrapper.style.transform === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
     });
+  });
 
-    window.addEventListener('resize', ()=>{ if(steps[currentStep].objects) loadStep(currentStep); });
+  fullscreen.appendChild(container);
+  document.body.appendChild(fullscreen);
 
-    loadStep(0);
+  container.querySelector('div').scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+
+  fullscreen.addEventListener('click', e => {
+    if (e.target === fullscreen) {
+      fullscreen.remove();
+      loadStep(5);
+    }
+  });
+
+  return; // evita fullscreen normal
+}
+
+
+// --- Cianos carousel com efeito flip ---
+if (cianos.includes(src)) {
+  const fullscreen = document.createElement('div');
+  fullscreen.className = 'fullscreen';
+
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.flexDirection = 'row';
+  container.style.gap = '20px';
+  container.style.alignItems = 'center';
+  container.style.justifyContent = 'flex-start';
+  container.style.overflowX = 'auto';
+  container.style.overflowY = 'hidden';
+  container.style.padding = '20px';
+  container.style.height = 'auto';
+  container.style.maxHeight = '85vh';
+  container.style.scrollbarWidth = 'none';
+  container.style.flexWrap = 'nowrap';
+  container.style.scrollSnapType = 'x mandatory';
+
+  cianos.forEach(imgSrc => {
+    const flipWrapper = document.createElement('div');
+    flipWrapper.style.position = 'relative';
+    flipWrapper.style.flex = '0 0 auto';
+    flipWrapper.style.width = '200px';
+    flipWrapper.style.height = 'auto';
+    flipWrapper.style.cursor = 'pointer';
+    flipWrapper.style.perspective = '1200px';
+    flipWrapper.style.scrollSnapAlign = 'center';
+
+    const innerWrapper = document.createElement('div');
+    innerWrapper.style.position = 'relative';
+    innerWrapper.style.width = '100%';
+    innerWrapper.style.height = 'auto';
+    innerWrapper.style.transformStyle = 'preserve-3d';
+    innerWrapper.style.transition = 'transform 0.8s';
+
+    // Frente
+    const frontFace = document.createElement('img');
+    frontFace.src = imgSrc;
+    frontFace.style.width = '100%';
+    frontFace.style.height = 'auto';
+    frontFace.style.maxHeight = '70vh';
+    frontFace.style.backfaceVisibility = 'hidden';
+    frontFace.style.position = 'relative';
+    innerWrapper.appendChild(frontFace);
+
+    // Verso
+    const backSrc = imgSrc.replace('_Frente', '_Costas');
+    const backFace = document.createElement('img');
+    backFace.style.width = '100%';
+    backFace.style.height = 'auto';
+    backFace.style.maxHeight = '70vh';
+    backFace.style.backfaceVisibility = 'hidden';
+    backFace.style.transform = 'rotateY(180deg)';
+    backFace.style.position = 'absolute';
+    backFace.style.top = 0;
+    backFace.style.left = 0;
+
+    const testImg = new Image();
+    testImg.onload = () => {
+      backFace.src = backSrc;
+      innerWrapper.appendChild(backFace);
+    };
+    testImg.src = backSrc;
+
+    flipWrapper.appendChild(innerWrapper);
+    container.appendChild(flipWrapper);
+
+    flipWrapper.addEventListener('click', e => {
+      e.stopPropagation();
+      innerWrapper.style.transform =
+        innerWrapper.style.transform === 'rotateY(180deg)'
+          ? 'rotateY(0deg)'
+          : 'rotateY(180deg)';
+    });
+  });
+
+  fullscreen.appendChild(container);
+  document.body.appendChild(fullscreen);
+
+  setTimeout(() => {
+    container.firstElementChild?.scrollIntoView({
+      behavior: 'auto',
+      block: 'nearest',
+      inline: 'center',
+    });
+  }, 50);
+
+  fullscreen.addEventListener('click', e => {
+    if (e.target === fullscreen) {
+      fullscreen.remove();
+      loadStep(7);
+    }
+  });
+
+  return;
+}
+
+
+
+
+
+  // --- NORMAL ZOOM ---
+  const fullscreen = document.createElement('div');
+  fullscreen.className = 'fullscreen';
+  const zimg = document.createElement('img');
+  zimg.src = src;
+  fullscreen.appendChild(zimg);
+  fullscreen.addEventListener('click', e => {
+    if (e.target === fullscreen) {
+      fullscreen.remove();
+      if(src.includes("Cianotipo_SINGLE_2.png")) loadStep(8);
+      else if(nextStep !== undefined) loadStep(nextStep);
+    }
+  });
+  document.body.appendChild(fullscreen);
+}
+
+// --- Criar hotspots ---
+function createObjects(objects) {
+  clearOverlay();
+  objects.forEach(o => {
+    const container = document.createElement('div');
+    container.className = 'hotspot-object';
+    container.style.left = o.left + '%';
+    container.style.top = o.top + '%';
+    if (o.width) container.style.width = o.width + '%';
+    container.style.height = o.height ? o.height + '%' : 'auto';
+    container.style.zIndex = o.zindex ?? 2;
+    if (o.rotate) container.style.transform = `rotate(${o.rotate}deg)`;
+
+    const flipContainer = document.createElement('div');
+    flipContainer.className = 'hotspot-flip-container';
+
+    const frontFace = document.createElement('img');
+    frontFace.src = o.src;
+    frontFace.className = 'hotspot-object-face hotspot-object-front';
+    flipContainer.appendChild(frontFace);
+
+    if (o.backSrc) {
+      const backFace = document.createElement('img');
+      backFace.src = o.backSrc;
+      backFace.className = 'hotspot-object-face hotspot-object-back';
+      flipContainer.appendChild(backFace);
+
+      // Clique no hotspot abre fullscreen com flip
+      container.addEventListener('click', e => {
+        e.stopPropagation();
+        openFullscreenWithFlip(o.src, o.backSrc, o.nextStep);
+      });
+    } else {
+      container.addEventListener('click', e => {
+        e.stopPropagation();
+        openZoom(o.src, o.nextStep); // <-- chama openZoom para book1 e normal zoom
+      });
+    }
+
+    container.appendChild(flipContainer);
+    overlay.appendChild(container);
+  });
+}
+
+// --- Fullscreen de imagens únicas sem flip ---
+function openFullscreen(src, nextStep) {
+  const fullscreen = document.createElement('div');
+  fullscreen.className = 'fullscreen';
+  const img = document.createElement('img');
+  img.src = src;
+  fullscreen.appendChild(img);
+
+  img.addEventListener('click', e => {
+    e.stopPropagation();
+    if (nextStep) loadStep(nextStep);
+    fullscreen.remove();
+  });
+
+  fullscreen.addEventListener('click', e => {
+    if (e.target === fullscreen) {
+      fullscreen.remove();
+      if (nextStep) loadStep(nextStep);
+    }
+  });
+
+  document.body.appendChild(fullscreen);
+}
+
+// --- Fullscreen com flip para objetos com backSrc ---
+function openFullscreenWithFlip(frontSrc, backSrc, nextStep) {
+  const fullscreen = document.createElement('div');
+  fullscreen.className = 'fullscreen';
+
+  const flipHost = document.createElement('div');
+  flipHost.className = 'fullscreen-flip-host';
+
+  const flipWrapper = document.createElement('div');
+  flipWrapper.className = 'fullscreen-flip-wrapper';
+
+  const frontFace = document.createElement('img');
+  frontFace.src = frontSrc;
+  frontFace.className = 'fullscreen-face fullscreen-front';
+
+  const backFace = document.createElement('img');
+  backFace.src = backSrc;
+  backFace.className = 'fullscreen-face fullscreen-back';
+
+  flipWrapper.appendChild(frontFace);
+  flipWrapper.appendChild(backFace);
+  flipHost.appendChild(flipWrapper);
+  fullscreen.appendChild(flipHost);
+
+  // Clique na imagem faz flip
+  flipWrapper.addEventListener('click', e => {
+    e.stopPropagation();
+    const flipped = flipWrapper.style.transform === 'rotateY(180deg)';
+    flipWrapper.style.transform = flipped ? 'rotateY(0deg)' : 'rotateY(180deg)';
+  });
+
+  fullscreen.addEventListener('click', e => {
+    if (e.target === fullscreen) {
+      fullscreen.remove();
+      if (nextStep) loadStep(nextStep);
+    }
+  });
+
+  document.body.appendChild(fullscreen);
+}
+
+// --- Carregar passo ---
+function loadStep(i) {
+  if (i < 0 || i >= steps.length) return;
+  currentStep = i;
+  const step = steps[i];
+  clearOverlay();
+  img.src = step.src;
+  preload(steps[i + 1]?.src);
+
+  img.onload = () => {
+    if (i === 0) {
+      wrap.style.width = "100vw";
+      wrap.style.height = "100vh";
+      img.style.width = "100vw";
+      img.style.height = "100vh";
+      img.style.objectFit = "contain";
+    } else if (i === 1) {
+      wrap.style.width = "100vw";
+      wrap.style.height = "100vh";
+      img.style.width = "100vw";
+      img.style.height = "100vh";
+      img.style.objectFit = "cover";
+    } else {
+      wrap.style.height = "100vh";
+      wrap.style.width = img.naturalWidth * (wrap.clientHeight / img.naturalHeight) + 'px';
+      img.style.height = "100vh";
+      img.style.width = "auto";
+      img.style.objectFit = "initial";
+    }
+
+    createObjects(step.objects || []);
+    img.onclick = (i === 0) ? () => loadStep(step.next) : null;
+
+    const stage = document.getElementById('stage');
+    stage.scrollLeft = wrap.scrollWidth - stage.clientWidth;
+  };
+}
+
+loadStep(currentStep);
+
+
     
   </script>
 </body>
+
 </html>
