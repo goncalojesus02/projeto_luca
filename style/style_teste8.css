@@ -81,11 +81,12 @@
     border-radius: 6px;
     animation: zoomIn 0.4s ease;
   }
-    @keyframes zoomIn {
+  
+  @keyframes zoomIn {
       from {transform: scale(0.5); opacity: 0;}
       to {transform: scale(1); opacity: 1;}
-    }
+  }
     /* esconder scroll do carrossel horizontal */
-    .fullscreen div::-webkit-scrollbar {
+  .fullscreen div::-webkit-scrollbar {
       display: none;
-    }
+  }
