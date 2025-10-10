@@ -15,6 +15,13 @@
     cursor: pointer;
   }
 
+  #text-garden {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    cursor: pointer;
+  }
+
   /* Imagem central e arrastável */
   #draggable {
     height: 30%;
@@ -29,3 +36,13 @@
   #draggable.dragging {
     cursor: grabbing;
   }
+
+  #about-portrait {
+  position: absolute;
+  bottom: 2vh;      /* distância da borda inferior */
+  right: 2vw;       /* distância da borda direita */
+  width: 20vw;      /* largura proporcional à viewport */
+  height: auto;     /* mantém a proporção da imagem */
+  max-width: 300px; /* limite máximo opcional */
+  opacity: 0.9;     /* leve transparência opcional */
+}

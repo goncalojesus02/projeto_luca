@@ -1,9 +1,18 @@
  // Parágrafo clicável
-  const topRight = document.getElementById('top-right');
-
+const topRight = document.getElementById('top-right');
+if (topRight) {
   topRight.addEventListener('click', () => {
     window.location.href = '/gardener.html';
   });
+}
+
+const textGarden = document.getElementById('text-garden');
+if (textGarden) {
+  textGarden.addEventListener('click', () => {
+    window.location.href = '/index.html';
+  });
+}
+
 
   // Imagem arrastável
   const draggable = document.getElementById('draggable');
