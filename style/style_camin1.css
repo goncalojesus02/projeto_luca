@@ -35,7 +35,7 @@
   }
 
   .grid-item1 img {
-    width: 60%;
+    width: 50%;
     height: auto; /* mantém proporção da imagem */
     object-fit: contain; 
     transform: scaleX(-1);
@@ -48,18 +48,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* evita overflow interno */
+    overflow: hidden; 
   }
 
   .grid-item2 p {
     width: 95%;
     height: 95%;
     margin: 0;
-    font-size: clamp(0.8rem, 1.6vw, 00.8rem); /* texto responsivo */
-    line-height: 1rem;
+    font-size: clamp(0.8rem, 1.8vw, 0.8rem); /* texto responsivo */
+    line-height: 1.3rem;
     text-align: left;
     overflow: hidden; /* corta texto que ultrapasse o container */
-    padding-top: 35px;
+    
   }
 
       footer {

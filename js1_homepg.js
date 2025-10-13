@@ -11,12 +11,11 @@ let offsetX, offsetY;
 const textoExtra = document.createElement("section");
 textoExtra.id = "textoExtra";
 textoExtra.textContent = 
-  "A série dos Garden apresenta objetos artísticos únicos criados a partir das tatuagens de indivíduos. O presente website é um portfólio interativo que visa democratizar o acesso a esses projetos, almejando traduzir a experiência e especificidade da leitura de cada projeto para uma plataforma digital.\n\n" +
-  "The Garden series presents unique artistic objects created from the tattoos of individuals. Este website serve como um portfólio interativo que visa democratizar o acesso a esses projetos, traduzindo a experiência e especificidade de cada leitura para uma plataforma digital.";
+  "A série Garden apresenta objetos artísticos únicos criados a partir das tatuagens de indivíduos. O presente website é um portfólio interativo que visa democratizar o acesso a esses projetos, almejando traduzir a experiência e especificidade da leitura de cada projeto para uma plataforma digital.\n\n";
 coluna3.appendChild(textoExtra);
 
 // --- duplo clique em Nina’s Garden ---
-texto1.addEventListener("dblclick", () => {
+texto1.addEventListener("click", () => {
   if (imagemVisivel) {
     imagemVisivel = false;
     imagem1.classList.remove("visivel");
