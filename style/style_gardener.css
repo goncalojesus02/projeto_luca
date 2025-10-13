@@ -1,0 +1,59 @@
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    p {
+        font-size: clamp(0.8rem, 1.6vw, 00.8rem); /* texto responsivo */
+        line-height: 1rem;
+    }
+
+    #text-garden{
+    cursor: pointer;
+    font-size: .8em;
+    text-align: right;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      width: 100vw;
+      height: 100vh;
+      padding: 1rem;
+    }
+
+.text-garden:hover{
+    color: #4552ff;
+}
+
+    #about-portrait {
+      position: absolute;
+      bottom: 4vh;      /* distância da borda inferior */
+      right: 2vw;       /* distância da borda direita */
+      width: 18vw;      /* largura proporcional à viewport */
+      height: auto;     /* mantém a proporção da imagem */
+      max-width: 300px; /* limite máximo opcional */
+      opacity: 0.9;     /* leve transparência opcional */
+    }
+
+    footer {
+      position: fixed;      /* fixa o footer na viewport */
+      bottom: 0;            /* no fundo */
+      left: 0;              /* alinha à esquerda */
+      width: 100vw;         /* ocupa toda a largura da viewport */
+      padding: 0.5rem 1rem; /* espaçamento interno */
+      font-size: 0.6rem;    /* fonte pequena */
+      display: flex;
+      align-items: center;  /* verticalmente centralizado */
+      justify-content: flex-start; /* texto à esquerda */
+      z-index: 1000;        /* fica acima de outros elementos */
+    }

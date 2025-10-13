@@ -42,9 +42,6 @@
     transition: transform 0.3s;
   }
 
-  .grid-item1 img:hover {
-    transform: scale(1.05) scaleX(-1);
-  }
 
   /* Coluna do texto */
   .grid-item2 {
@@ -58,9 +55,24 @@
     width: 95%;
     height: 95%;
     margin: 0;
-    font-size: clamp(12px, 1.5vw, 20px); /* texto responsivo */
-    line-height: 1.4em;
+    font-size: clamp(0.8rem, 1.6vw, 00.8rem); /* texto responsivo */
+    line-height: 1rem;
     text-align: left;
     overflow: hidden; /* corta texto que ultrapasse o container */
     padding-top: 35px;
   }
+
+      footer {
+      position: fixed;      /* fixa o footer na viewport */
+      bottom: 0;            /* no fundo */
+      left: 0;              /* alinha à esquerda */
+      width: 100vw;         /* ocupa toda a largura da viewport */
+      padding: 0.5rem 1rem; /* espaçamento interno */
+      font-size: 0.4rem;    /* fonte pequena */
+      display: flex;
+      align-items: center;  /* verticalmente centralizado */
+      justify-content: flex-start; /* texto à esquerda */
+      z-index: 1000;        /* fica acima de outros elementos */
+    }
+
+ 

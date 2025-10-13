@@ -1,48 +1,101 @@
- body {
-    margin: 0;
-    background-color: white;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
-    font-family: Arial, sans-serif;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  /* Parágrafo no canto superior direito */
-  #top-right {
-    position: absolute;
-    top: 1em;
-    right: 1em;
-    cursor: pointer;
-  }
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
 
-  #text-garden {
-    position: absolute;
-    top: 1em;
-    right: 1em;
-    cursor: pointer;
-  }
+li {
+  list-style-type: none;
+}
 
-  /* Imagem central e arrastável */
-  #draggable {
-    height: 30%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: grab;
-    user-select: none;
-  }
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  width: 100vw;
+  height: 100vh;
+  padding: 1rem;
+}
 
-  #draggable.dragging {
-    cursor: grabbing;
-  }
+.coluna {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
-  #about-portrait {
+/* coluna 3: Gardener topo, textoExtra fundo */
+.coluna3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* distribui topo/fundo */
+  align-items: flex-end;          /* alinhado à direita */
+  position: relative;
+  height: 100%;
+}
+
+.texto1, .texto2 {
+  cursor: pointer;
+  font-size: 0.8em;
+  width: 100%;
+  transition: color 0.3s;
+}
+
+.texto1 { text-align: left; }
+.texto2 { text-align: right; }
+
+.texto1:hover, .texto2:hover {
+  color: #4552ff;
+}
+
+/* imagem central */
+.imagem {
+  opacity: 0;
   position: absolute;
-  bottom: 2vh;      /* distância da borda inferior */
-  right: 2vw;       /* distância da borda direita */
-  width: 20vw;      /* largura proporcional à viewport */
-  height: auto;     /* mantém a proporção da imagem */
-  max-width: 300px; /* limite máximo opcional */
-  opacity: 0.9;     /* leve transparência opcional */
+  max-width: 300px;
+  max-height: 200px;
+  cursor: grab;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.imagem.visivel {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* texto extra dentro da coluna3 */
+#textoExtra {
+  max-width: 90%;
+  text-align: right;
+  font-size: clamp(0.6rem, 1.6vw, 0.4rem);
+  opacity: 0;
+  line-height: 1.4;
+  transition: opacity 0.4s ease-in-out;
+  white-space: pre-line; /* permite \n como parágrafo */
+}
+
+#textoExtra.visivel {
+  opacity: 1;
+}
+
+/* footer fixo */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  padding: 0.5rem 1rem;
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 1000;
 }

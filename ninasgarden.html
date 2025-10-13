@@ -10,6 +10,7 @@ body {
   margin: 0;
   height: 100%;
   overflow: hidden;
+  
 }
 
 #stage {
@@ -139,6 +140,7 @@ body {
   justify-content: center;
   transform-style: preserve-3d;
   transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  will-change: transform !important
 }
 
 .fullscreen-face {
@@ -151,11 +153,17 @@ body {
   filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
   cursor: pointer;
   transition: none !important;
+  filter: none !important;
+   z-index: 2;
 }
 
 .fullscreen-back {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(-1px);
+    z-index: 1;
 }
+
+
+
 
 /* ----------------------------- */
 /* FULLSCREEN BOOK3 (FUNDO ESPECIAL) */
@@ -178,7 +186,7 @@ body {
 .fullscreen-book3 img {
   max-width: 80%;
   max-height: 80%;
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+
   cursor: pointer;
   border-radius: 6px;
   animation: zoomIn 0.4s ease;
@@ -197,33 +205,61 @@ body {
 }
 
 /* Remove barras de rolagem internas */
-.fullscreen div::-webkit-scrollbar {
+.fullscreen section::-webkit-scrollbar {
   display: none;
 }
 
-.fullscreen > div {
+.fullscreen > section {
   max-height: 85vh;
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
 }
 
-.fullscreen > div img {
-  max-height: 70vh;
-  width: auto;
+
+
+/* PISQUE DOS CARTOES */
+/* força composição por GPU e esconde a “verso” em flips 3D */
+.card, .card, .carousel-item * {
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform-style: preserve-3d !important;
+    will-change: transform, opacity;
+  transform: translateZ(0); /* força GPU composition */
+  contain: layout paint; /* isola o layout, evita reflow global */
 }
 
+/* promove o layer — evita repinturas quebradas */
+.card, .carousel-item {
+  will-change: transform, opacity;
+  transform: translateZ(0); /* ou translate3d(0,0,0) */
+}
+
+/* se houver transições que piscam, isola-as numa classe separada */
+
+.inner-wrapper {
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  backface-visibility: hidden; /* MUITO importante */
+  will-change: transform;
+  transform: rotateY(0deg) translateZ(0);
+}
+
+.card.no-transition,
+.card.no-transition * {
+  transition: none !important;
+}
 
   </style>
 </head>
 
 <body>
-  <div id="stage">
-    <div class="image-wrap">
+  <section id="stage">
+    <section class="image-wrap">
       <img id="stageImg" src="" draggable="false">
-      <div id="overlay" class="overlay"></div>
-    </div>
-  </div>
+      <section id="overlay" class="overlay"></section>
+    </section>
+  </section>
 
   <script>
     const steps = [
@@ -235,29 +271,26 @@ body {
         ]
       },
 
-      {
-        src: "/imgs/secao2/2.jpg",
+      { src: "/imgs/secao2/2.jpg",
         objects: [
-          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 2, top: 9, width: 21, rotate: -8 },
-          { src: "/imgs/secao2/objeto_2.png", left: 12, top: 18, width: 22, zIndex: 0, nextStep: 3 }
+          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 3, top: 11, width: 18, rotate: -8, zindex: 2 },
+          { src: "/imgs/secao2/objeto_2.png", left: 12, top: 18, width: 22, nextStep: 3, zindex: 0 }
         ]
       },
 
-      {
-        src: "/imgs/secao3/3.jpg",
+      { src: "/imgs/secao3/3.jpg",
         objects: [
-          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 2, top: 9, width: 12, zIndex: 1, rotate: -8 },
+          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 3, top: 9, width: 14, zindex: 2, rotate: -8 },
 
-          { src: "/imgs/secao2/objeto_2.png", left: 10, top: 12, width: 22, zindex: 1, nextStep: 3 }, { src: "/imgs/secao3/book1/1_capa.png", left: 30, top: 14, width: 20, zindex: 0, nextStep: 4 }]
+          { src: "/imgs/secao2/objeto_2.png", left: 10, top: 14, width: 18, zindex: 0 }, { src: "/imgs/secao3/book1/1_capa.png", left: 30, top: 14, width: 20, zindex: 0, nextStep: 4 }]
       },
 
-      {
-        src: "/imgs/secao4/4.jpg",
+      { src: "/imgs/secao4/4.jpg",
         objects: [
-          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 2, top: 9, width: 21, zIndex: 1, rotate: -8 },
-          { src: "/imgs/secao2/objeto_2.png", left: 8, top: 12, width: 18, zindex: 0 },
+          { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png", left: 4, top: 9, width: 11, zIndex: 1, rotate: -8 },
+          { src: "/imgs/secao2/objeto_2.png", left: 9, top: 14, width: 14, zindex: 0 },
 
-          { src: "/imgs/secao3/book1/1_capa.png", left: 26, top: 5, width: 20, zindex: 0 },
+          { src: "/imgs/secao3/book1/1_capa.png", left: 26, top: 8, width: 18, zindex: 0 },
 
           { src: "/imgs/secao4/Anthotype_1_F.png", left: 50, top: 28, width: 8, zindex: 8 },
           { src: "/imgs/secao4/Anthotype_2_F.png", backSrc: "/imgs/secao4/Anthotype_2_C.png", left: 50, top: 28, width: 8, zindex: 7, rotate: 3 },
@@ -272,11 +305,11 @@ body {
 
        { src: "/imgs/secao5/5.jpg", objects: [
           { src: "/imgs/secao1/objeto-1-frente.png", backSrc: "/imgs/secao1/objeto-1-costas.png",  left: 2, top: 9, width: 10, zindex: 2, rotate:-8 }, 
-          { src: "/imgs/secao2/objeto_2.png", left: 8, top: 12, width: 12, zindex: 1}, 
-          { src: "/imgs/secao3/book1/1_capa.png", left: 20, top: 5, width: 16, zindex: 0 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 8, top: 14, width: 12, zindex: 1}, 
+
+          { src: "/imgs/secao3/book1/1_capa.png", left: 20, top: 10, width: 14, zindex: 0 }, 
 
           { src:"/imgs/secao4/Anthotype_1_F.png",  left: 40, top: 28, width: 6, zindex: 8 }, 
-
           { src:"/imgs/secao4/Anthotype_2_F.png",  backSrc: "/imgs/secao4/Anthotype_2_C.png", left: 40, top: 28, width: 6, zindex:7, rotate: 3 }, 
           { src:"/imgs/secao4/Anthotype_3_F.png",  backSrc: "/imgs/secao4/Anthotype_3_C.png", left: 40, top: 28, width: 6, zindex:7, rotate: -3 }, 
           { src:"/imgs/secao4/Anthotype_4_F.png",  backSrc: "/imgs/secao4/Anthotype_4_C.png", left: 40, top: 28, width: 6, zindex:7, rotate: 4 }, 
@@ -285,37 +318,41 @@ body {
           { src:"/imgs/secao4/Anthotype_7_F.png", left: 40, top: 28, width: 6, zindex:7, rotate: 5 }, 
           { src:"/imgs/secao4/Anthotype_8_F.png", left: 40, top: 28, width: 6, zindex:7, rotate: -2 },
 
-          { src: "/imgs/secao5/book2/2_capa.png", left: 50, top: 8, width: 14, zindex: 0 }
+          { src: "/imgs/secao5/book2/2_capa.png", left: 50, top: 10, width: 13, zindex: 0 }
       ] },
       
       { src: "/imgs/secao6/6.jpg", objects: [
-          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 10, zindex: 2, rotate:-8}, 
-          { src: "/imgs/secao2/objeto_2.png", left: 8, top: 12, width: 12, zindex: 1}, 
-          { src: "/imgs/secao3/book1/1_capa.png", left: 20, top: 5, width: 14, zindex: 0 }, 
-          { src:"/imgs/secao4/Anthotype_1_F.png", left: 38, top: 28, width: 6, zindex: 8 }, 
-          { src:"/imgs/secao4/Anthotype_2_F.png", left: 38, top: 28, width: 6, zindex:7, rotate: 3 }, 
-          { src:"/imgs/secao4/Anthotype_3_F.png", left: 38, top: 28, width: 6, zindex:7, rotate: -3 }, 
-          { src:"/imgs/secao4/Anthotype_4_F.png", left: 38, top: 28, width: 6, zindex:7, rotate: 4 }, 
-          { src:"/imgs/secao4/Anthotype_5_F.png", left: 38, top: 28, width: 6, zindex:7, rotate: -4 }, 
-          { src:"/imgs/secao4/Anthotype_6_F.png", left: 38, top: 28, width: 6, zindex:7, rotate: -5 }, 
-          { src:"/imgs/secao4/Anthotype_7_F.png", left: 38, top: 28, width: 6, zindex:7, rotate: 5 }, 
-          { src:"/imgs/secao4/Anthotype_8_F.png", left: 38, top: 28, width: 6, zindex:7, rotate: -2 },
+          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 8, zindex: 2, rotate:-8}, 
+          { src: "/imgs/secao2/objeto_2.png", left: 7, top: 18, width: 10, zindex: 1}, 
 
-          { src: "/imgs/secao5/book2/2_capa.png", left: 48, top: 5, width: 13, zindex: 0 },
-          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 66, top: 28, width: 6, zindex: 8 },
-          { src:"/imgs/secao6/Ciano_2_Frente.png", backSrc: "/imgs/secao6/Ciano_2_Costas.png", left: 66, top: 28, width: 6, zindex: 1, rotate:4 }, 
-          { src:"/imgs/secao6/Ciano_3_Frente.png", backSrc: "/imgs/secao6/Ciano_3_Costas.png", left: 66, top: 28, width: 6, zindex: 2, rotate:-4 },
-          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 66, top: 28, width: 6, zindex: 3 , rotate: 5},
-          { src:"/imgs/secao6/Ciano_5_Frente.png", backSrc: "/imgs/secao6/Ciano_5_Costas.png", left: 66, top: 28, width: 6, zindex: 4, rotate: -3 },
-          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 66, top: 28, width: 6, zindex: 5, rotate: 3 },
-          { src:"/imgs/secao6/Ciano_7_Frente.png", backSrc: "/imgs/secao6/Ciano_7_Costas.png", left: 66, top: 28, width: 6, zindex: 6, rotate: -6 },
-          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 66, top: 28, width: 6, zindex: 7, rotate: 6}
+          { src: "/imgs/secao3/book1/1_capa.png", left: 18, top: 12, width: 12, zindex: 0 }, 
+
+          { src:"/imgs/secao4/Anthotype_1_F.png", left: 34, top: 28, width: 6, zindex: 8 }, 
+          { src:"/imgs/secao4/Anthotype_2_F.png", left: 34, top: 28, width: 6, zindex:7, rotate: 3 }, 
+          { src:"/imgs/secao4/Anthotype_3_F.png", left: 34, top: 28, width: 6, zindex:7, rotate: -3 }, 
+          { src:"/imgs/secao4/Anthotype_4_F.png", left: 34, top: 28, width: 6, zindex:7, rotate: 4 }, 
+          { src:"/imgs/secao4/Anthotype_5_F.png", left: 34, top: 28, width: 6, zindex:7, rotate: -4 }, 
+          { src:"/imgs/secao4/Anthotype_6_F.png", left: 34, top: 28, width: 6, zindex:7, rotate: -5 }, 
+          { src:"/imgs/secao4/Anthotype_7_F.png", left: 34, top: 28, width: 6, zindex:7, rotate: 5 }, 
+          { src:"/imgs/secao4/Anthotype_8_F.png", left: 34, top: 28, width: 6, zindex:7, rotate: -2 },
+
+          { src: "/imgs/secao5/book2/2_capa.png", left: 44, top: 10, width: 11, zindex: 0 },
+          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 63, top: 28, width: 6, zindex: 8 },
+          { src:"/imgs/secao6/Ciano_2_Frente.png", backSrc: "/imgs/secao6/Ciano_2_Costas.png", left: 63, top: 28, width: 6, zindex: 1, rotate:4 }, 
+          { src:"/imgs/secao6/Ciano_3_Frente.png", backSrc: "/imgs/secao6/Ciano_3_Costas.png", left: 63, top: 28, width: 6, zindex: 2, rotate:-4 },
+          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 63, top: 28, width: 6, zindex: 3 , rotate: 5},
+          { src:"/imgs/secao6/Ciano_5_Frente.png", backSrc: "/imgs/secao6/Ciano_5_Costas.png", left: 63, top: 28, width: 6, zindex: 4, rotate: -3 },
+          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 63, top: 28, width: 6, zindex: 5, rotate: 3 },
+          { src:"/imgs/secao6/Ciano_7_Frente.png", backSrc: "/imgs/secao6/Ciano_7_Costas.png", left: 63, top: 28, width: 6, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 63, top: 28, width: 6, zindex: 7, rotate: 6}
       ] },
 
       { src: "/imgs/secao7/7.jpg", objects: [
-         { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 8, zindex: 2 }, 
-          { src: "/imgs/secao2/objeto_2.png", left: 6, top: 12, width: 10, zindex: 1 }, 
-          { src: "/imgs/secao3/book1/1_capa.png", left: 16, top: 10, width: 10, zindex: 0 }, 
+         { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 8, zindex: 2 , rotate: -8}, 
+
+          { src: "/imgs/secao2/objeto_2.png", left: 6, top: 18, width: 9, zindex: 1 }, 
+
+          { src: "/imgs/secao3/book1/1_capa.png", left: 17, top: 16, width: 10, zindex: 0 }, 
           { src:"/imgs/secao4/Anthotype_1_F.png", left: 32, top: 28, width: 5, zindex: 8 }, 
           { src:"/imgs/secao4/Anthotype_2_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: 3 }, 
           { src:"/imgs/secao4/Anthotype_3_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: -3 }, 
@@ -325,16 +362,16 @@ body {
           { src:"/imgs/secao4/Anthotype_7_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: 5 }, 
           { src:"/imgs/secao4/Anthotype_8_F.png", left: 32, top: 28, width: 5, zindex:7, rotate: -2 },
 
-           { src: "/imgs/secao5/book2/2_capa.png", left: 42, top: 10, width: 10, zindex: 0 },
+           { src: "/imgs/secao5/book2/2_capa.png", left: 42, top: 18, width: 9, zindex: 0 },
 
-          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 58, top: 28, width: 6, zindex: 8 },
-          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 58, top: 28, width: 6, zindex: 1, rotate:4 }, 
-          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 58, top: 28, width: 6, zindex: 2, rotate:-4 },
-          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 58, top: 28, width: 6, zindex: 3 , rotate: 5},
-          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 58, top: 28, width: 6, zindex: 4, rotate: -3 },
-          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 58, top: 28, width: 6, zindex: 5, rotate: 3 },
-          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 58, top: 28, width: 6, zindex: 6, rotate: -6 },
-          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 58, top: 28, width: 6, zindex: 7, rotate: 6},
+          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 56, top: 28, width: 6, zindex: 8 },
+          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 56, top: 28, width: 6, zindex: 1, rotate:4 }, 
+          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 56, top: 28, width: 6, zindex: 2, rotate:-4 },
+          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 56, top: 28, width: 6, zindex: 3 , rotate: 5},
+          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 56, top: 28, width: 6, zindex: 4, rotate: -3 },
+          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 56, top: 28, width: 6, zindex: 5, rotate: 3 },
+          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 56, top: 28, width: 6, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 56, top: 28, width: 6, zindex: 7, rotate: 6},
 
           { src:"/imgs/secao7/Cianotipo_SINGLE_1.png", left: 64, top: 28, width: 6, zindex: 7},
           { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 71, top: 28, width: 6, zindex: 7},
@@ -343,29 +380,29 @@ body {
        { src: "/imgs/secao8/8.jpg", objects: [
           { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 6, zindex: 2 , rotate:-8}, 
 
-          { src: "/imgs/secao2/objeto_2.png", left: 4, top: 12, width: 10, zindex: 1 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 18, width: 7, zindex: 1 }, 
 
-          { src: "/imgs/secao3/book1/1_capa.png", left: 13, top: 8, width: 10, zindex: 0 }, 
+          { src: "/imgs/secao3/book1/1_capa.png", left: 13, top: 16, width: 8, zindex: 0 }, 
 
-          { src:"/imgs/secao4/Anthotype_1_F.png", left: 26, top: 28, width: 5, zindex: 8 }, 
-          { src:"/imgs/secao4/Anthotype_2_F.png", left: 26, top: 28, width: 5, zindex:7, rotate: 3 }, 
-          { src:"/imgs/secao4/Anthotype_3_F.png", left: 26, top: 28, width: 5, zindex:7, rotate: -3 }, 
-          { src:"/imgs/secao4/Anthotype_4_F.png", left: 26, top: 28, width: 5, zindex:7, rotate: 4 }, 
-          { src:"/imgs/secao4/Anthotype_5_F.png", left: 26, top: 28, width: 5, zindex:7, rotate: -4 }, 
-          { src:"/imgs/secao4/Anthotype_6_F.png", left: 26, top: 28, width: 5, zindex:7, rotate: -5 }, 
-          { src:"/imgs/secao4/Anthotype_7_F.png", left: 26, top: 28, width: 5, zindex:7, rotate: 5 }, 
-          { src:"/imgs/secao4/Anthotype_8_F.png", left: 26, top: 28, width: 5, zindex:7, rotate: -2 },
+          { src:"/imgs/secao4/Anthotype_1_F.png", left: 24, top: 28, width: 4, zindex: 8 }, 
+          { src:"/imgs/secao4/Anthotype_2_F.png", left: 24, top: 28, width: 4, zindex:7, rotate: 3 }, 
+          { src:"/imgs/secao4/Anthotype_3_F.png", left: 24, top: 28, width: 4, zindex:7, rotate: -3 }, 
+          { src:"/imgs/secao4/Anthotype_4_F.png", left: 24, top: 28, width: 4, zindex:7, rotate: 4 }, 
+          { src:"/imgs/secao4/Anthotype_5_F.png", left: 24, top: 28, width: 4, zindex:7, rotate: -4 }, 
+          { src:"/imgs/secao4/Anthotype_6_F.png", left: 24, top: 28, width: 4, zindex:7, rotate: -5 }, 
+          { src:"/imgs/secao4/Anthotype_7_F.png", left: 24, top: 28, width: 4, zindex:7, rotate: 5 }, 
+          { src:"/imgs/secao4/Anthotype_8_F.png", left: 24, top: 28, width: 4, zindex:7, rotate: -2 },
 
-           { src: "/imgs/secao5/book2/2_capa.png", left: 33, top: 5, width: 9, zindex: 0 },
+           { src: "/imgs/secao5/book2/2_capa.png", left: 31, top: 14, width: 8, zindex: 0 },
 
-          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 46, top: 28, width: 6, zindex: 8 },
-          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 46, top: 28, width: 6, zindex: 1, rotate:4 }, 
-          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 46, top: 28, width: 6, zindex: 2, rotate:-4 },
-          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 46, top: 28, width: 6, zindex: 3 , rotate: 5},
-          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 46, top: 28, width: 6, zindex: 4, rotate: -3 },
-          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 46, top: 28, width: 6, zindex: 5, rotate: 3 },
-          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 46, top: 28, width: 6, zindex: 6, rotate: -6 },
-          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 46, top: 28, width: 6, zindex: 7, rotate: 6},
+          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 46, top: 36, width: 4, zindex: 8 },
+          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 46, top: 36, width: 4, zindex: 1, rotate:4 }, 
+          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 46, top: 36, width: 4, zindex: 2, rotate:-4 },
+          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 46, top: 36, width: 4, zindex: 3 , rotate: 5},
+          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 46, top: 36, width: 4, zindex: 4, rotate: -3 },
+          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 46, top: 36, width: 4, zindex: 5, rotate: 3 },
+          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 46, top: 36, width: 4, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 46, top: 36, width: 4, zindex: 7, rotate: 6},
 
           { src:"/imgs/secao7/Cianotipo_SINGLE_1.png", left: 54, top: 28, width: 6, zindex: 7},
           { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 62, top: 28, width: 6, zindex: 7},
@@ -374,10 +411,11 @@ body {
       ] },
 
       { src: "/imgs/secao9/9.jpg", objects: [
-          { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 8, zindex: 2, rotate:-2 }, 
-          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 12, width: 8, zindex: 1},
+          { src: "/imgs/secao1/objeto-1-frente.png", left: 1, top: 9, width: 6, zindex: 2, rotate:-8 },
 
-          { src: "/imgs/secao3/book1/1_capa.png", left: 12, top: 10, width: 8, zindex: 0 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 20, width: 6, zindex: 1},
+
+          { src: "/imgs/secao3/book1/1_capa.png", left: 12, top: 16, width: 7, zindex: 0 }, 
 
           { src:"/imgs/secao4/Anthotype_1_F.png", left: 22, top: 28, width: 4, zindex: 8 }, 
           { src:"/imgs/secao4/Anthotype_2_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 3 }, 
@@ -388,7 +426,7 @@ body {
           { src:"/imgs/secao4/Anthotype_7_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 5 }, 
           { src:"/imgs/secao4/Anthotype_8_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -2 },
 
-          { src: "/imgs/secao5/book2/2_capa.png", left: 28, top: 5, width: 8, zindex: 0 },
+          { src: "/imgs/secao5/book2/2_capa.png", left: 28, top: 14, width: 7, zindex: 0 },
 
           { src:"/imgs/secao6/Ciano_1_Frente.png", left: 40, top: 33, width: 4, zindex: 8 },
           { src:"/imgs/secao6/Ciano_2_Frente.png", left: 40, top: 33, width: 4, zindex: 1, rotate:4 }, 
@@ -403,55 +441,56 @@ body {
           { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 51, top: 32, width: 4, zindex: 7},
 
           { src: "/imgs/secao8/Tecido-+-livro_aberto.png", left: 54, top: -4, width: 20, zindex: 7},
-          { src: "/imgs/secao8/book3/3_costas.png", left: 60, top: 10, width: 8, zindex: 8 },
+          { src: "/imgs/secao8/book3/3_costas.png", left: 61, top: 20, width: 6, zindex: 8 },
 
-          { src: "/imgs/secao9/book4/4_capa.png", left: 72, top: 10, width: 14, zindex: 8},
+          { src: "/imgs/secao9/book4/4_capa.png", left: 72, top: 18, width: 12, zindex: 8},
 
       ] },
 
        { src: "/imgs/secao10/10.jpg", objects: [
-         { src: "/imgs/secao1/objeto-1-frente.png", left: 2, top: 9, width: 6, zindex: 2, rotate:-2 }, 
-          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 12, width: 8, zindex: 1 },
+         { src: "/imgs/secao1/objeto-1-frente.png", left: 1, top: 9, width: 6, zindex: 2, rotate:-8 }, 
 
-          { src: "/imgs/secao3/book1/1_capa.png", left: 12, top: 10, width: 8, zindex: 0 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 5, top: 18, width: 6, zindex: 1 },
 
-          { src:"/imgs/secao4/Anthotype_1_F.png", left: 22, top: 28, width: 4, zindex: 8 }, 
-          { src:"/imgs/secao4/Anthotype_2_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 3 }, 
-          { src:"/imgs/secao4/Anthotype_3_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -3 }, 
-          { src:"/imgs/secao4/Anthotype_4_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 4 }, 
-          { src:"/imgs/secao4/Anthotype_5_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -4 }, 
-          { src:"/imgs/secao4/Anthotype_6_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -5 }, 
-          { src:"/imgs/secao4/Anthotype_7_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: 5 }, 
-          { src:"/imgs/secao4/Anthotype_8_F.png", left: 22, top: 28, width: 4, zindex:7, rotate: -2 },
+          { src: "/imgs/secao3/book1/1_capa.png", left: 12, top: 18, width: 6, zindex: 0 }, 
 
-          { src: "/imgs/secao5/book2/2_capa.png", left: 28, top: 5, width: 8, zindex: 0 },
+          { src:"/imgs/secao4/Anthotype_1_F.png", left: 20, top: 30, width: 4, zindex: 8 }, 
+          { src:"/imgs/secao4/Anthotype_2_F.png", left: 20, top: 30, width: 4, zindex:7, rotate: 3 }, 
+          { src:"/imgs/secao4/Anthotype_3_F.png", left: 20, top: 30, width: 4, zindex:7, rotate: -3 }, 
+          { src:"/imgs/secao4/Anthotype_4_F.png", left: 20, top: 30, width: 4, zindex:7, rotate: 4 }, 
+          { src:"/imgs/secao4/Anthotype_5_F.png", left: 20, top: 30, width: 4, zindex:7, rotate: -4 }, 
+          { src:"/imgs/secao4/Anthotype_6_F.png", left: 20, top: 30, width: 4, zindex:7, rotate: -5 }, 
+          { src:"/imgs/secao4/Anthotype_7_F.png", left: 20, top: 30, width: 4, zindex:7, rotate: 5 }, 
+          { src:"/imgs/secao4/Anthotype_8_F.png", left: 20, top: 30, width: 4, zindex:7, rotate: -2 },
 
-          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 38, top: 28, width: 4, zindex: 8 },
-          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 38, top: 28, width: 4, zindex: 1, rotate:4 }, 
-          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 38, top: 28, width: 4, zindex: 2, rotate:-4 },
-          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 38, top: 28, width: 4, zindex: 3 , rotate: 5},
-          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 38, top: 28, width: 4, zindex: 4, rotate: -3 },
-          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 38, top: 28, width: 4, zindex: 5, rotate: 3 },
-          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 38, top: 28, width: 4, zindex: 6, rotate: -6 },
-          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 38, top: 28, width: 4, zindex: 7, rotate: 6},
+          { src: "/imgs/secao5/book2/2_capa.png", left: 26, top: 16, width: 6, zindex: 0 },
+
+          { src:"/imgs/secao6/Ciano_1_Frente.png", left: 38, top: 32, width: 3, zindex: 8 },
+          { src:"/imgs/secao6/Ciano_2_Frente.png", left: 38, top: 32, width: 3, zindex: 1, rotate:4 }, 
+          { src:"/imgs/secao6/Ciano_3_Frente.png", left: 38, top: 32, width: 3, zindex: 2, rotate:-4 },
+          { src:"/imgs/secao6/Ciano_4_Frente.png", left: 38, top: 32, width: 3, zindex: 3 , rotate: 5},
+          { src:"/imgs/secao6/Ciano_5_Frente.png", left: 38, top: 32, width: 3, zindex: 4, rotate: -3 },
+          { src:"/imgs/secao6/Ciano_6_Frente.png", left: 38, top: 32, width: 3, zindex: 5, rotate: 3 },
+          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 38, top: 32, width: 3, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 38, top: 32, width: 3, zindex: 7, rotate: 6},
 
           { src:"/imgs/secao7/Cianotipo_SINGLE_1.png", left: 43, top: 28, width: 4, zindex: 7},
-          { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 51, top: 28, width: 4, zindex: 7},
+          { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 48, top: 28, width: 4, zindex: 7},
 
           { src: "/imgs/secao8/Tecido-+-livro_aberto.png", left: 51, top: -8, width: 20, zindex: 7},
 
           
-          { src: "/imgs/secao8/book3/3_costas.png", left: 57, top: 8, width: 8, zindex: 8},
+          { src: "/imgs/secao8/book3/3_costas.png", left: 58, top: 12, width: 7, zindex: 8},
 
-          { src: "/imgs/secao9/book4/4_capa.png", left: 68, top: 10, width: 14, zindex: 8},
+          { src: "/imgs/secao9/book4/4_capa.png", left: 68, top: 16, width: 12, zindex: 8},
 
-          { src: "/imgs/secao10/book5/5_capa.png", left: 76, top: 10, width: 14, zindex: 8},
+          { src: "/imgs/secao10/book5/5_capa.png", left: 76, top: 16, width: 12, zindex: 8},
       ] },
 
       { src: "/imgs/secao11/11.jpg", objects: [
 
-          { src: "/imgs/secao1/objeto-1-frente.png", left: 1, top: 9, width: 5, zindex: 2, rotate:-2 }, 
-          { src: "/imgs/secao2/objeto_2.png", left: 4, top: 14, width: 6, zindex: 1 },
+          { src: "/imgs/secao1/objeto-1-frente.png", left: 1, top: 9, width: 5, zindex: 2, rotate:-8 }, 
+          { src: "/imgs/secao2/objeto_2.png", left: 4, top: 18, width: 5, zindex: 1 },
 
           { src: "/imgs/secao3/book1/1_capa.png", left: 10, top: 14, width: 6, zindex: 0 }, 
 
@@ -464,7 +503,7 @@ body {
           { src:"/imgs/secao4/Anthotype_7_F.png", left: 19, top: 28, width: 3, zindex:7, rotate: 5 }, 
           { src:"/imgs/secao4/Anthotype_8_F.png", left: 19, top: 28, width: 3, zindex:7, rotate: -2 },
 
-          { src: "/imgs/secao5/book2/2_capa.png", left: 25, top: 14, width: 6, zindex: 0 },
+          { src: "/imgs/secao5/book2/2_capa.png", left: 25, top: 12, width: 6, zindex: 0 },
 
           { src:"/imgs/secao6/Ciano_1_Frente.png", left: 35, top: 36, width: 3, zindex: 8 },
           { src:"/imgs/secao6/Ciano_2_Frente.png", left: 35, top: 36, width: 3, zindex: 1, rotate:4 }, 
@@ -472,28 +511,28 @@ body {
           { src:"/imgs/secao6/Ciano_4_Frente.png", left: 35, top: 36, width: 3, zindex: 3 , rotate: 5},
           { src:"/imgs/secao6/Ciano_5_Frente.png", left: 35, top: 36, width: 3, zindex: 4, rotate: -3 },
           { src:"/imgs/secao6/Ciano_6_Frente.png", left: 35, top: 36, width: 3, zindex: 5, rotate: 3 },
-          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 3, top: 36, width: 3, zindex: 6, rotate: -6 },
-          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 36, top: 36, width: 3, zindex: 7, rotate: 6},
+          { src:"/imgs/secao6/Ciano_7_Frente.png", left: 35, top: 36, width: 3, zindex: 6, rotate: -6 },
+          { src:"/imgs/secao6/Ciano_8_Frente.png", left: 36, top: 36, width: 3, zindex: 7, rotate: 5},
 
           { src:"/imgs/secao7/Cianotipo_SINGLE_1.png", left: 40, top: 30, width: 4, zindex: 7},
           { src:"/imgs/secao7/Cianotipo_SINGLE_2.png", left: 45, top: 30, width: 4, zindex: 7},
 
-          { src: "/imgs/secao8/Tecido-+-livro_aberto.png", left: 49, top: -8, width: 20, zindex: 7},
+          { src: "/imgs/secao8/Tecido-+-livro_aberto.png", left: 49, top: -7, width: 18, zindex: 7},
 
           { src: "/imgs/secao8/book3/3_costas.png", left: 55, top: 10, width: 7, zindex: 8},
         
 
-          { src: "/imgs/secao9/book4/4_capa.png", left: 64, top: 12, width: 12, zindex: 8},
+          { src: "/imgs/secao9/book4/4_capa.png", left: 66, top: 18, width: 10, zindex: 8},
 
-          { src: "/imgs/secao10/book5/5_capa.png", left: 72, top: 12, width: 12, zindex: 8},
+          { src: "/imgs/secao10/book5/5_capa.png", left: 74, top: 18, width: 10, zindex: 8},
 
-          { src: "/imgs/secao11/book6/6_capa.png", left: 80, top: 12, width: 12, zindex: 8},
+          { src: "/imgs/secao11/book6/6_capa.png", left: 82, top: 18, width: 10, zindex: 8},
 
       ]}
 
     ];
 
-   const img = document.getElementById('stageImg');
+const img = document.getElementById('stageImg');
 const overlay = document.getElementById('overlay');
 const wrap = document.querySelector('.image-wrap');
 let currentStep = 0;
@@ -575,11 +614,12 @@ function preload(src) { if (src) { new Image().src = src; } }
 function clearOverlay() { overlay.innerHTML = ''; }
 
 // --- Zoom e galeria ---
+
 function openZoom(src, nextStep) {
   // --- Book1 gallery ---
   if (book1Gallery.includes(src)) {
     let currentIndex = book1Gallery.indexOf(src);
-    const fullscreen = document.createElement('div');
+    const fullscreen = document.createElement('section');
     fullscreen.className = 'fullscreen';
     const zimg = document.createElement('img');
     zimg.src = book1Gallery[currentIndex];
@@ -605,7 +645,7 @@ function openZoom(src, nextStep) {
   // --- Book2 gallery ---
       else if (src.includes("/imgs/secao5/book2/2_capa.png")) {
         let currentIndex = 0;
-        const fullscreen = document.createElement('div');
+        const fullscreen = document.createElement('section');
         fullscreen.className = 'fullscreen';
         const zimg = document.createElement('img');
         zimg.src = book2Gallery[currentIndex];
@@ -629,10 +669,10 @@ function openZoom(src, nextStep) {
       }
 
 
-// --- Book3 gallery para seção 8 ---
-    else if (src.includes("tecido_booklet_fechado.png")) {
+  // --- Book3 gallery para seção 8 ---
+    else if (book3Gallery.includes(src) || src.includes("tecido_booklet_fechado.png")) {
     let currentIndex = 0;
-    const fullscreen = document.createElement('div');
+    const fullscreen = document.createElement('section');
     fullscreen.className = 'fullscreen-book3';
 
     const zimg = document.createElement('img');
@@ -658,7 +698,7 @@ function openZoom(src, nextStep) {
     // --- Book4 gallery ---
       else if (src.includes("/imgs/secao9/book4/4_capa.png")) {
         let currentIndex = 0;
-        const fullscreen = document.createElement('div');
+        const fullscreen = document.createElement('section');
         fullscreen.className = 'fullscreen';
         const zimg = document.createElement('img');
         zimg.src = book4Gallery[currentIndex];
@@ -677,14 +717,16 @@ function openZoom(src, nextStep) {
 
         zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
         fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+
+         return; // evita que o normal zoom seja executado
       }
 
 
 
-        // --- Book5 gallery ---
-    else if (src.includes("/imgs/secao10/book5/5_capa.png")) {
-      let currentIndex = 0;
-      const fullscreen = document.createElement('div');
+    // --- Book5 gallery ---
+    else if (book5Gallery.includes(src)) {
+      let currentIndex = book5Gallery.indexOf(src);
+      const fullscreen = document.createElement('section');
       fullscreen.className = 'fullscreen';
       const zimg = document.createElement('img');
       zimg.src = book5Gallery[currentIndex];
@@ -703,13 +745,15 @@ function openZoom(src, nextStep) {
 
       zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
       fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+
+       return; // evita que o normal zoom seja executado
     }
 
 
-        // --- Book6 gallery ---
-    else if (src.includes("/imgs/secao11/book6/6_capa.png")) {
-      let currentIndex = 0;
-      const fullscreen = document.createElement('div');
+    // --- Book6 gallery ---
+    else if (book6Gallery.includes(src)) {
+      let currentIndex = book6Gallery.indexOf(src);
+      const fullscreen = document.createElement('section');
       fullscreen.className = 'fullscreen';
       const zimg = document.createElement('img');
       zimg.src = book6Gallery[currentIndex];
@@ -728,6 +772,8 @@ function openZoom(src, nextStep) {
 
       zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
       fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+
+       return; // evita que o normal zoom seja executado
     }
 
 
@@ -735,10 +781,10 @@ function openZoom(src, nextStep) {
 
 // --- Anthotypes carousel com efeito flip ---
 if (anthotypes.includes(src)) {
-  const fullscreen = document.createElement('div');
+  const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
 
-  const container = document.createElement('div');
+  const container = document.createElement('section');
   container.style.display = 'flex';
   container.style.flexDirection = 'row';
   container.style.gap = '12px';
@@ -754,8 +800,8 @@ if (anthotypes.includes(src)) {
   container.style.scrollSnapType = 'x mandatory';
 
   anthotypes.forEach(imgSrc => {
-    const flipWrapper = document.createElement('div');
-    flipWrapper.style.position = 'relative';
+    const flipWrapper = document.createElement('section');
+    flipWrapper.style.position = 'absolue';
     flipWrapper.style.flex = '0 0 auto';
     flipWrapper.style.width = '200px'; // largura fixa para o flip
     flipWrapper.style.height = '100%';
@@ -763,11 +809,12 @@ if (anthotypes.includes(src)) {
     flipWrapper.style.perspective = '1200px';
     flipWrapper.style.scrollSnapAlign = 'center';
 
-    const innerWrapper = document.createElement('div');
-    innerWrapper.style.position = 'relative';
+    const innerWrapper = document.createElement('section');
+    innerWrapper.style.position = 'absolute';
     innerWrapper.style.width = '100%';
     innerWrapper.style.height = '100%';
-    innerWrapper.style.transformStyle = 'preserve-3d';
+    innerWrapper.style.willChange = 'transform';
+    
     innerWrapper.style.transition = 'transform 0.8s';
 
     // Frente
@@ -786,37 +833,42 @@ if (anthotypes.includes(src)) {
     const backFace = document.createElement('img');
     backFace.style.width = '100%';
     backFace.style.height = '100%';
-    backFace.style.backfaceVisibility = 'hidden';
-    backFace.style.transform = 'rotateY(180deg)';
     backFace.style.position = 'absolute';
     backFace.style.top = 0;
     backFace.style.left = 0;
+    backFace.style.display = 'none';
 
-    // Preload para verificar se existe
-    const testImg = new Image();
-    testImg.onload = () => {
-      backFace.src = backSrc;
-      innerWrapper.appendChild(backFace);
-    };
-    testImg.onerror = () => {
-      // Se não existir, não adiciona backFace
-      // Sem borda, sem espaço
-    };
-    testImg.src = backSrc;
 
-    flipWrapper.appendChild(innerWrapper);
-    container.appendChild(flipWrapper);
+    /////////////////////////////////////////////7
+  // Preload do backFace
+  const testImg = new Image();
+  testImg.onload = () => {
+    backFace.src = backSrc;
+  };
+  testImg.src = backSrc;
 
-    flipWrapper.addEventListener('click', e => {
-      e.stopPropagation();
-      innerWrapper.style.transform = innerWrapper.style.transform === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
-    });
+  flipWrapper.appendChild(frontFace);
+  flipWrapper.appendChild(backFace);
+  container.appendChild(flipWrapper);
+
+     flipWrapper.addEventListener('click', e => {
+    e.stopPropagation();
+    if (frontFace.style.display !== 'none') {
+      frontFace.style.display = 'none';
+      backFace.style.display = 'block';
+    } else {
+      frontFace.style.display = 'block';
+      backFace.style.display = 'none';
+    }
   });
+  });
+
+  //////////////////////////////////////77////
 
   fullscreen.appendChild(container);
   document.body.appendChild(fullscreen);
 
-  container.querySelector('div').scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+  container.querySelector('section').scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
 
   fullscreen.addEventListener('click', e => {
     if (e.target === fullscreen) {
@@ -831,14 +883,13 @@ if (anthotypes.includes(src)) {
 
 // --- Cianos carousel com efeito flip ---
 if (cianos.includes(src)) {
-  const fullscreen = document.createElement('div');
+  const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
 
-  const container = document.createElement('div');
+  const container = document.createElement('section');
   container.style.display = 'flex';
   container.style.flexDirection = 'row';
   container.style.gap = '20px';
-  container.style.alignItems = 'center';
   container.style.justifyContent = 'flex-start';
   container.style.overflowX = 'auto';
   container.style.overflowY = 'hidden';
@@ -850,21 +901,13 @@ if (cianos.includes(src)) {
   container.style.scrollSnapType = 'x mandatory';
 
   cianos.forEach(imgSrc => {
-    const flipWrapper = document.createElement('div');
+    const flipWrapper = document.createElement('section');
     flipWrapper.style.position = 'relative';
     flipWrapper.style.flex = '0 0 auto';
     flipWrapper.style.width = '200px';
     flipWrapper.style.height = 'auto';
     flipWrapper.style.cursor = 'pointer';
-    flipWrapper.style.perspective = '1200px';
     flipWrapper.style.scrollSnapAlign = 'center';
-
-    const innerWrapper = document.createElement('div');
-    innerWrapper.style.position = 'relative';
-    innerWrapper.style.width = '100%';
-    innerWrapper.style.height = 'auto';
-    innerWrapper.style.transformStyle = 'preserve-3d';
-    innerWrapper.style.transition = 'transform 0.8s';
 
     // Frente
     const frontFace = document.createElement('img');
@@ -872,44 +915,42 @@ if (cianos.includes(src)) {
     frontFace.style.width = '100%';
     frontFace.style.height = 'auto';
     frontFace.style.maxHeight = '70vh';
-    frontFace.style.backfaceVisibility = 'hidden';
     frontFace.style.position = 'relative';
-    innerWrapper.appendChild(frontFace);
 
     // Verso
     const backSrc = imgSrc.replace('_Frente', '_Costas');
     const backFace = document.createElement('img');
+    backFace.src = backSrc; // define o src já aqui
     backFace.style.width = '100%';
     backFace.style.height = 'auto';
     backFace.style.maxHeight = '70vh';
-    backFace.style.backfaceVisibility = 'hidden';
-    backFace.style.transform = 'rotateY(180deg)';
     backFace.style.position = 'absolute';
     backFace.style.top = 0;
     backFace.style.left = 0;
+    backFace.style.display = 'none';
 
-    const testImg = new Image();
-    testImg.onload = () => {
-      backFace.src = backSrc;
-      innerWrapper.appendChild(backFace);
-    };
-    testImg.src = backSrc;
-
-    flipWrapper.appendChild(innerWrapper);
+    // Adiciona frente e verso
+    flipWrapper.appendChild(frontFace);
+    flipWrapper.appendChild(backFace);
     container.appendChild(flipWrapper);
 
+    // Alterna frente/verso sem piscar
     flipWrapper.addEventListener('click', e => {
       e.stopPropagation();
-      innerWrapper.style.transform =
-        innerWrapper.style.transform === 'rotateY(180deg)'
-          ? 'rotateY(0deg)'
-          : 'rotateY(180deg)';
+      if (frontFace.style.display !== 'none') {
+        frontFace.style.display = 'none';
+        backFace.style.display = 'block';
+      } else {
+        frontFace.style.display = 'block';
+        backFace.style.display = 'none';
+      }
     });
   });
 
   fullscreen.appendChild(container);
   document.body.appendChild(fullscreen);
 
+  // Centraliza o primeiro item
   setTimeout(() => {
     container.firstElementChild?.scrollIntoView({
       behavior: 'auto',
@@ -918,6 +959,7 @@ if (cianos.includes(src)) {
     });
   }, 50);
 
+  // Fecha fullscreen ao clicar fora
   fullscreen.addEventListener('click', e => {
     if (e.target === fullscreen) {
       fullscreen.remove();
@@ -929,11 +971,30 @@ if (cianos.includes(src)) {
 }
 
 
+// TESTES PISQUE ///
+
+// quando vai para fullscreen ou o utilizador vira o telemóvel,
+// adiciona a classe no-transition por 300ms enquanto o layout estabiliza.
+function temporarilyDisableTransitions(root = document.body, ms = 350) {
+  root.classList.add('no-transition');
+  clearTimeout(root._noTransTO);
+  root._noTransTO = setTimeout(() => root.classList.remove('no-transition'), ms);
+}
+
+// exemplo: quando entras em fullscreen (pseudocódigo)
+document.addEventListener('fullscreenchange', () => {
+  temporarilyDisableTransitions(document.querySelector('.cards-container'), 400);
+});
+
+// quando há mudança de orientação
+window.addEventListener('orientationchange', () => {
+  temporarilyDisableTransitions(document.querySelector('.cards-container'), 500);
+});
 
 
 
   // --- NORMAL ZOOM ---
-  const fullscreen = document.createElement('div');
+  const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
   const zimg = document.createElement('img');
   zimg.src = src;
@@ -952,7 +1013,7 @@ if (cianos.includes(src)) {
 function createObjects(objects) {
   clearOverlay();
   objects.forEach(o => {
-    const container = document.createElement('div');
+    const container = document.createElement('section');
     container.className = 'hotspot-object';
     container.style.left = o.left + '%';
     container.style.top = o.top + '%';
@@ -961,7 +1022,7 @@ function createObjects(objects) {
     container.style.zIndex = o.zindex ?? 2;
     if (o.rotate) container.style.transform = `rotate(${o.rotate}deg)`;
 
-    const flipContainer = document.createElement('div');
+    const flipContainer = document.createElement('section');
     flipContainer.className = 'hotspot-flip-container';
 
     const frontFace = document.createElement('img');
@@ -980,11 +1041,17 @@ function createObjects(objects) {
         e.stopPropagation();
         openFullscreenWithFlip(o.src, o.backSrc, o.nextStep);
       });
-    } else {
+    } 
+
+    
+    
+    else {
       container.addEventListener('click', e => {
         e.stopPropagation();
         openZoom(o.src, o.nextStep); // <-- chama openZoom para book1 e normal zoom
       });
+
+      
     }
 
     container.appendChild(flipContainer);
@@ -992,9 +1059,34 @@ function createObjects(objects) {
   });
 }
 
+function openBookGallery(galleryArray, nextStep) {
+  let currentIndex = 0;
+  const fullscreen = document.createElement('section');
+  fullscreen.className = 'fullscreen';
+
+  const zimg = document.createElement('img');
+  zimg.src = galleryArray[currentIndex];
+  fullscreen.appendChild(zimg);
+  document.body.appendChild(fullscreen);
+
+  const nextImage = () => {
+    if (currentIndex < galleryArray.length - 1) {
+      currentIndex++;
+      zimg.src = galleryArray[currentIndex];
+    } else {
+      fullscreen.remove();
+      if (nextStep !== undefined) loadStep(nextStep);
+    }
+  };
+
+  zimg.addEventListener('click', e => { e.stopPropagation(); nextImage(); });
+  fullscreen.addEventListener('click', e => { if (e.target === fullscreen) nextImage(); });
+}
+
+
 // --- Fullscreen de imagens únicas sem flip ---
 function openFullscreen(src, nextStep) {
-  const fullscreen = document.createElement('div');
+  const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
   const img = document.createElement('img');
   img.src = src;
@@ -1018,13 +1110,13 @@ function openFullscreen(src, nextStep) {
 
 // --- Fullscreen com flip para objetos com backSrc ---
 function openFullscreenWithFlip(frontSrc, backSrc, nextStep) {
-  const fullscreen = document.createElement('div');
+  const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
 
-  const flipHost = document.createElement('div');
+  const flipHost = document.createElement('section');
   flipHost.className = 'fullscreen-flip-host';
 
-  const flipWrapper = document.createElement('div');
+  const flipWrapper = document.createElement('section');
   flipWrapper.className = 'fullscreen-flip-wrapper';
 
   const frontFace = document.createElement('img');
