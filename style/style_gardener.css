@@ -12,13 +12,13 @@
     }
 
     p {
-        font-size: clamp(0.8rem, 1.6vw, 00.8rem); /* texto responsivo */
-        line-height: 1rem;
+        font-size: 1.3rem;; /* texto responsivo */
+        line-height: 1.7rem;
     }
 
     #text-garden{
     cursor: pointer;
-    font-size: .8em;
+    font-size: 1.3rem;
     text-align: right;
     }
 
@@ -51,7 +51,7 @@
       left: 0;              /* alinha à esquerda */
       width: 100vw;         /* ocupa toda a largura da viewport */
       padding: 0.5rem 1rem; /* espaçamento interno */
-      font-size: 0.6rem;    /* fonte pequena */
+      font-size: 0.9rem;    /* fonte pequena */
       display: flex;
       align-items: center;  /* verticalmente centralizado */
       justify-content: flex-start; /* texto à esquerda */
