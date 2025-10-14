@@ -73,7 +73,6 @@ li {
 
 /* texto extra dentro da coluna3 */
 #textoExtra {
-  max-width: 90%;
   text-align: right;
   font-size: clamp(0.6rem, 1.6vw, 0.4rem);
   opacity: 0;
