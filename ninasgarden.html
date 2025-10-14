@@ -164,11 +164,8 @@
 }
 
 
-
-
-/* ----------------------------- */
 /* FULLSCREEN BOOK3 (FUNDO ESPECIAL) */
-/* ----------------------------- */
+
 .fullscreen-book3 {
   position: fixed;
   top: 0;
@@ -251,24 +248,23 @@
   transition: none !important;
 }
 
-/* x de fechar */
-
-#closeFullscreenImg {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  width: 32px;  /* ajusta ao tamanho desejado */
-  height: 32px;
+.fullscreen-close-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  color: rgb(5, 16, 170);
+  border: none;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  display: none;  /* oculto por padrão */
-  z-index: 9999;
-  pointer-events: auto;  /* permite clique */
+  transition: background 0.2s;
 }
 
-/* Quando qualquer fullscreen estiver ativo */
-.fullscreen-active #closeFullscreenImg {
-  display: block;
-}
+
+
 
   </style>
 </head>
@@ -277,10 +273,7 @@
   <section id="stage">
     <section class="image-wrap">
       <img id="stageImg" src="" draggable="false">
-      <img id="closeFullscreenImg" src="/imgs/img11494980leo.png" alt="Fechar tela cheia">
       <section id="overlay" class="overlay"></section>
-  
-
     </section>
   </section>
 
@@ -467,7 +460,7 @@
 
           { src: "/imgs/secao8/book3/3_costas.png", left: 61, top: 18, width: 6, zindex: 8 },
 
-          { src: "/imgs/secao9/book4/4_capa.png", left: 74, top: 18, width: 5, zindex: 8},
+          { src: "/imgs/secao9/book4/4_capa.png", left: 74, top: 16, width: 6, zindex: 8},
 
       ] },
 
@@ -506,9 +499,9 @@
           
           { src: "/imgs/secao8/book3/3_costas.png", left: 59, top: 16, width: 6, zindex: 8},
 
-          { src: "/imgs/secao9/book4/4_capa.png", left: 72, top: 16, width: 5, zindex: 8},
+          { src: "/imgs/secao9/book4/4_capa.png", left: 72, top: 14, width: 6, zindex: 8},
 
-          { src: "/imgs/secao10/book5/5_capa.png", left: 80, top: 16, width: 5, zindex: 8},
+          { src: "/imgs/secao10/book5/5_capa.png", left: 80, top: 14, width: 6, zindex: 8},
       ] },
 
       { src: "/imgs/secao11/11.jpg", objects: [
@@ -546,11 +539,11 @@
           { src: "/imgs/secao8/book3/3_costas.png", left: 55, top: 10, width: 7, zindex: 8},
         
 
-          { src: "/imgs/secao9/book4/4_capa.png", left: 66, top: 18, width: 5, zindex: 8},
+          { src: "/imgs/secao9/book4/4_capa.png", left: 66, top: 14, width: 6, zindex: 8},
 
-          { src: "/imgs/secao10/book5/5_capa.png", left: 74, top: 18, width: 5, zindex: 8},
+          { src: "/imgs/secao10/book5/5_capa.png", left: 74, top: 14, width: 6, zindex: 8},
 
-          { src: "/imgs/secao11/book6/6_capa.png", left: 82, top: 18, width: 5, zindex: 8},
+          { src: "/imgs/secao11/book6/6_capa.png", left: 82, top: 14, width: 6, zindex: 8},
 
       ]}
 
@@ -656,36 +649,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// x de chegar interacao 
 
-document.addEventListener("DOMContentLoaded", () => {
-  const closeImg = document.getElementById("closeFullscreenImg");
-
-  function closeFullscreen() {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-  }
-
-  // Clicar na imagem “X” fecha o fullscreen
-  closeImg.addEventListener("click", (e) => {
-    e.stopPropagation();
-    closeFullscreen();
-  });
-
-  // Monitorar mudança de fullscreen (qualquer elemento)
-  document.addEventListener("fullscreenchange", () => {
-    if (document.fullscreenElement) {
-      document.body.classList.add("fullscreen-active");
-    } else {
-      document.body.classList.remove("fullscreen-active");
-    }
-  });
-});
 
 
 
@@ -697,6 +661,18 @@ function openZoom(src, nextStep) {
     let currentIndex = book1Gallery.indexOf(src);
     const fullscreen = document.createElement('section');
     fullscreen.className = 'fullscreen';
+
+     // Botão no canto superior esquerdo
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (nextStep) loadStep(nextStep);
+  });
+  fullscreen.appendChild(closeBtn);
+
     const zimg = document.createElement('img');
     zimg.src = book1Gallery[currentIndex];
     fullscreen.appendChild(zimg);
@@ -723,6 +699,21 @@ function openZoom(src, nextStep) {
         let currentIndex = 0;
         const fullscreen = document.createElement('section');
         fullscreen.className = 'fullscreen';
+
+         // Botão no canto superior esquerdo
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (e.target === closeBtn) {
+      fullscreen.remove();
+      loadStep(6);
+    }
+  });
+  fullscreen.appendChild(closeBtn);
+
         const zimg = document.createElement('img');
         zimg.src = book2Gallery[currentIndex];
         fullscreen.appendChild(zimg);
@@ -751,6 +742,21 @@ function openZoom(src, nextStep) {
     const fullscreen = document.createElement('section');
     fullscreen.className = 'fullscreen-book3';
 
+
+     // Botão no canto superior esquerdo
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (e.target === closeBtn) {
+      fullscreen.remove();
+      loadStep(9);
+    }
+  });
+  fullscreen.appendChild(closeBtn);
+
     const zimg = document.createElement('img');
     zimg.src = book3Gallery[currentIndex];
     fullscreen.appendChild(zimg);
@@ -776,6 +782,21 @@ function openZoom(src, nextStep) {
         let currentIndex = 0;
         const fullscreen = document.createElement('section');
         fullscreen.className = 'fullscreen';
+
+         // Botão no canto superior esquerdo
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (e.target === closeBtn) {
+      fullscreen.remove();
+      loadStep(10);
+    }
+  });
+  fullscreen.appendChild(closeBtn);
+
         const zimg = document.createElement('img');
         zimg.src = book4Gallery[currentIndex];
         fullscreen.appendChild(zimg);
@@ -804,6 +825,21 @@ function openZoom(src, nextStep) {
       let currentIndex = book5Gallery.indexOf(src);
       const fullscreen = document.createElement('section');
       fullscreen.className = 'fullscreen';
+
+       // Botão no canto superior esquerdo
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (e.target === closeBtn) {
+      fullscreen.remove();
+      loadStep(11);
+    }
+  });
+  fullscreen.appendChild(closeBtn);
+
       const zimg = document.createElement('img');
       zimg.src = book5Gallery[currentIndex];
       fullscreen.appendChild(zimg);
@@ -831,6 +867,21 @@ function openZoom(src, nextStep) {
       let currentIndex = book6Gallery.indexOf(src);
       const fullscreen = document.createElement('section');
       fullscreen.className = 'fullscreen';
+
+       // Botão no canto superior esquerdo
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (e.target === closeBtn) {
+      fullscreen.remove();
+      loadStep(11);
+    }
+  });
+  fullscreen.appendChild(closeBtn);
+
       const zimg = document.createElement('img');
       zimg.src = book6Gallery[currentIndex];
       fullscreen.appendChild(zimg);
@@ -859,6 +910,20 @@ function openZoom(src, nextStep) {
 if (anthotypes.includes(src)) {
   const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
+
+       // Botão no canto superior esquerdo
+       const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (e.target === closeBtn) {
+      fullscreen.remove();
+      loadStep(5);
+    }
+  });
+  fullscreen.appendChild(closeBtn);
 
   const container = document.createElement('section');
   container.style.display = 'flex';
@@ -937,6 +1002,7 @@ if (anthotypes.includes(src)) {
       backFace.style.display = 'none';
     }
   });
+  
   });
 
   //////////////////////////////////////77////
@@ -954,6 +1020,7 @@ if (anthotypes.includes(src)) {
   });
 
   return; // evita fullscreen normal
+
 }
 
 
@@ -961,6 +1028,20 @@ if (anthotypes.includes(src)) {
 if (cianos.includes(src)) {
   const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
+
+   // Botão no canto superior esquerdo
+   const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (e.target === closeBtn) {
+      fullscreen.remove();
+      loadStep(7);
+    }
+  });
+  fullscreen.appendChild(closeBtn);
 
   const container = document.createElement('section');
   container.style.display = 'flex';
@@ -1072,14 +1153,35 @@ window.addEventListener('orientationchange', () => {
   // --- NORMAL ZOOM ---
   const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
+
+   // Botão no canto superior esquerdo
+   const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+  e.stopPropagation(); // evita que o clique "suba" para o fullscreen
+  fullscreen.remove();
+
+  // Verifica se a imagem é a específica
+  if (src.includes("Cianotipo_SINGLE_2.png")) {
+    loadStep(8); // vai para step 8
+  } else if (nextStep) {
+    loadStep(nextStep); // senão vai para o próximo step normal
+  }
+});
+  fullscreen.appendChild(closeBtn);
+
   const zimg = document.createElement('img');
   zimg.src = src;
   fullscreen.appendChild(zimg);
   fullscreen.addEventListener('click', e => {
     if (e.target === fullscreen) {
       fullscreen.remove();
-      if(src.includes("Cianotipo_SINGLE_2.png")) loadStep(8);
-      else if(nextStep !== undefined) loadStep(nextStep);
+      
+      if(src.includes("Cianotipo_SINGLE_2.png")) {
+         fullscreen.remove();
+        loadStep(8);
+      }
     }
   });
   document.body.appendChild(fullscreen);
@@ -1140,6 +1242,17 @@ function openBookGallery(galleryArray, nextStep) {
   const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
 
+   // Botão no canto superior esquerdo
+   const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (nextStep) loadStep(nextStep);
+  });
+  fullscreen.appendChild(closeBtn);
+
   const zimg = document.createElement('img');
   zimg.src = galleryArray[currentIndex];
   fullscreen.appendChild(zimg);
@@ -1164,6 +1277,18 @@ function openBookGallery(galleryArray, nextStep) {
 function openFullscreen(src, nextStep) {
   const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
+
+   // Botão no canto superior esquerdo
+   const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+    if (nextStep) loadStep(nextStep);
+  });
+  fullscreen.appendChild(closeBtn);
+
   const img = document.createElement('img');
   img.src = src;
   fullscreen.appendChild(img);
@@ -1188,6 +1313,16 @@ function openFullscreen(src, nextStep) {
 function openFullscreenWithFlip(frontSrc, backSrc, nextStep) {
   const fullscreen = document.createElement('section');
   fullscreen.className = 'fullscreen';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'fullscreen-close-btn';
+  closeBtn.innerHTML = '✕';
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    fullscreen.remove();
+     if (nextStep !== undefined) loadStep(nextStep);
+  });
+  fullscreen.appendChild(closeBtn);
 
   const flipHost = document.createElement('section');
   flipHost.className = 'fullscreen-flip-host';
@@ -1224,6 +1359,7 @@ function openFullscreenWithFlip(frontSrc, backSrc, nextStep) {
 
   document.body.appendChild(fullscreen);
 }
+
 
 // --- Carregar passo ---
 function loadStep(i) {
