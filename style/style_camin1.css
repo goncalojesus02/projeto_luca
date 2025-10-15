@@ -3,7 +3,8 @@
     padding: 0;
     height: 100%;
     width: 100%;
-    overflow: hidden; /* remove scroll da página */
+    overflow: visible; 
+    overflow-y: auto;/* remove scroll da página */
     font-family: Arial, sans-serif;
   }
 
@@ -50,7 +51,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; 
+ 
 
   }
 
@@ -62,7 +63,7 @@
     line-height: 1.7rem;
     text-align: left;
 
-    overflow: hidden; 
+ 
     padding-top: 5rem;/* corta texto que ultrapasse o container */
     padding-right: 20rem;
     
