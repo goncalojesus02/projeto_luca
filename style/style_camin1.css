@@ -34,6 +34,8 @@
     align-items: flex-start;
   }
 
+  
+
   .grid-item1 img {
     width: 50%;
     height: auto; /* mantém proporção da imagem */
@@ -49,16 +51,20 @@
     justify-content: center;
     align-items: center;
     overflow: hidden; 
+
   }
 
   .grid-item2 p {
     width: 95%;
     height: 95%;
     margin: 0;
-    font-size: clamp(0.8rem, 1.8vw, 0.8rem); /* texto responsivo */
-    line-height: 1.3rem;
+    font-size: 1.1rem;
+    line-height: 1.7rem;
     text-align: left;
-    overflow: hidden; /* corta texto que ultrapasse o container */
+
+    overflow: hidden; 
+    padding-top: 5rem;/* corta texto que ultrapasse o container */
+    padding-right: 20rem;
     
   }
 

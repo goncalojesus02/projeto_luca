@@ -21,7 +21,7 @@ li {
   gap: 10px;
   width: 100vw;
   height: 100vh;
-  padding: 1rem;
+  padding: 2rem;
 }
 
 .coluna {
@@ -42,7 +42,7 @@ li {
 
 .texto1, .texto2 {
   cursor: pointer;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   width: 100%;
   transition: color 0.3s;
 }
@@ -74,9 +74,9 @@ li {
 /* texto extra dentro da coluna3 */
 #textoExtra {
   text-align: right;
-  font-size: clamp(0.6rem, 1.6vw, 0.4rem);
+  font-size: 1.1rem;
   opacity: 0;
-  line-height: 1.4;
+  line-height: 1.7rem;
   transition: opacity 0.4s ease-in-out;
   white-space: pre-line; /* permite \n como parágrafo */
 }
@@ -91,7 +91,7 @@ li {
   bottom: 0;
   left: 0;
   width: 100vw;
-  padding: 0.5rem 1rem;
+  padding:  2rem;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
