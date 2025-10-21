@@ -263,9 +263,6 @@
   transition: background 0.2s;
 }
 
-
-
-
   </style>
 </head>
 
@@ -278,7 +275,7 @@
   </section>
 
   <script>
-    const steps = [
+   const steps = [
       { src: "/imgs/envelope_aberto.png", objects: [], next: 1 },
 
       {
@@ -1182,6 +1179,10 @@ window.addEventListener('orientationchange', () => {
          fullscreen.remove();
         loadStep(8);
       }
+
+      else if (nextStep) {
+      loadStep(nextStep);
+    }
     }
   });
   document.body.appendChild(fullscreen);
@@ -1371,6 +1372,7 @@ function loadStep(i) {
   preload(steps[i + 1]?.src);
 
   img.onload = () => {
+    // Ajuste de tamanho e proporção da imagem
     if (i === 0) {
       wrap.style.width = "100vw";
       wrap.style.height = "100vh";
@@ -1385,17 +1387,34 @@ function loadStep(i) {
       img.style.objectFit = "cover";
     } else {
       wrap.style.height = "100vh";
-      wrap.style.width = img.naturalWidth * (wrap.clientHeight / img.naturalHeight) + 'px';
+      wrap.style.width = img.naturalWidth * (wrap.clientHeight / img.naturalHeight) + "px";
       img.style.height = "100vh";
       img.style.width = "auto";
       img.style.objectFit = "initial";
     }
 
+    // Cria os hotspots do step atual
     createObjects(step.objects || []);
-    img.onclick = (i === 0) ? () => loadStep(step.next) : null;
 
-    const stage = document.getElementById('stage');
-    stage.scrollLeft = wrap.scrollWidth - stage.clientWidth;
+    // Clique direto na imagem (step inicial)
+    img.onclick = i === 0 ? () => loadStep(step.next) : null;
+
+    // 🔥 Centraliza o primeiro objeto (se existir)
+    const stage = document.getElementById("stage");
+    const firstObject = step.objects?.[0];
+
+    if (firstObject) {
+      // Converte % para px
+      const objLeft = (firstObject.left / 100) * wrap.scrollWidth;
+      const objWidth = ((firstObject.width || 0) / 100) * wrap.scrollWidth;
+
+      // Calcula o centro do objeto e centraliza na viewport
+      const objCenter = objLeft + objWidth / 2;
+      stage.scrollLeft = Math.max(0, objCenter - stage.clientWidth / 2);
+    } else {
+      // fallback: centraliza o conteúdo
+      stage.scrollLeft = (wrap.scrollWidth - stage.clientWidth) / 2;
+    }
   };
 }
 
